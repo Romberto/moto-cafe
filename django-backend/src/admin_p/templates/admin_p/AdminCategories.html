@@ -1,0 +1,31 @@
+{% extends 'admin_p/base.html' %}
+{% block css %}
+{% endblock %}
+{%block title%} категории {% endblock%}
+
+{% block body %}
+<div class="container">
+    <header class="pt-4">
+        <div class="d-flex justify-content-around">
+            <h2 class="text-center mb-3 d-inline ">Выберите категорию для изменения</h2>
+            <a href="{% url 'logout' %}" class="btn float-end">выход</a>
+        </div>
+
+
+    </header>
+    <main>
+        <div class="line w-100 mb-3"></div>
+        <ul class="add_product_btn">
+            <a href="{% url 'panel_category_create' %}" class=" btn btn-outline-success">добавить категорию</a>
+            <a href="{% url 'panel' %}" class=" btn btn-outline-success">панель администратора</a>
+        </ul>
+        <div class="line w-100 mb-3"></div>
+        <ul class="category_list text-center pt-5">
+            {% for category in object_list %}
+            <li class="mb-2"><a href="{% url 'panel_category_detail' category.id %}" class="btn btn-info">{{category.title}}</a></li>
+            {% endfor%}
+        </ul>
+    </main>
+</div>
+{% endblock %}
+

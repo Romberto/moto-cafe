@@ -1,0 +1,22 @@
+{% extends 'user_auth/base.html' %}
+
+{% block title%}
+Login
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<header>
+
+		</header>
+		<main class="pt-5">
+			<form method="post" class="w-75 mx-auto border border-success rounded text-center p-1">
+				{% csrf_token %}
+				{{form.as_p}}
+				<input type="submit" class="btn btn-success" value="войти">
+			</form>
+		</main>
+
+	</div>
+
+{% endblock %}

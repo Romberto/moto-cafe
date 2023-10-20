@@ -1,0 +1,67 @@
+{% extends 'admin_p/base.html' %}
+{% block css %}
+{% endblock %}
+{%block title%} продукты {% endblock%}
+{% block body %}
+<div class="container">
+    <header class="pt-4">
+        <div class="d-flex justify-content-around">
+            <h2 class="text-center mb-3 ">Выберите продукт для изменения</h2>
+            <a href="{% url 'logout' %}" class="btn float-end">выход</a>
+        </div>
+        <div class="line w-100 mb-3"></div>
+    </header>
+    <main>
+        <div class="main__filter">
+            <form method="get" class="d-flex text-align-center justify-content-between flex-wrap pt-3">
+                <label for="category_title" class="me-2 mb-2 mx-auto">Фильтр по категориям</label>
+
+                <select name="category_title" id="category_title"
+                        class="form-select d-block text-center mb-2 mx-auto w-75">
+                    <option value="">Все категории</option>
+                    {% for category in categories %}
+                    <option value="{{ category }}">
+                        {{ category }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-success d-block mb-2 mx-auto">Фильтровать</button>
+            </form>
+        </div>
+        <div class="line w-100 mb-3"></div>
+        <ul class="add_product_btn">
+            <a href="{% url 'panel_product_create' %}" class=" btn btn-outline-success">добавить продукт</a>
+            <a href="{% url 'panel' %}" class=" btn btn-outline-success">панель администратора</a>
+        </ul>
+        <div class="line w-100 mb-3"></div>
+        <ul class="category_list text-center pt-5">
+
+
+            {% for product in products %}
+
+            <li class="mb-2">
+
+                <a href="{% url 'product_panel_detail' product.id %}" class="btn btn-info"><b>{{product.category__title}}</b>
+                    : {{product.title}}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        {% if is_paginated %}
+        <nav aria-label="Page navigation conatiner"></nav>
+        {% endif %}
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li>
+                <a href="?page={{ page_obj.previous_page_number }}" class="page-link">&laquo; предыдущая </a>
+            </li>
+            {% endif %}
+            {% if page_obj.has_next %}
+            <li>
+                <a href="?page={{ page_obj.next_page_number }}" class="page-link"> следующая &raquo;</a>
+            </li>
+            {% endif %}
+        </ul>
+    </main>
+</div>
+{% endblock %}

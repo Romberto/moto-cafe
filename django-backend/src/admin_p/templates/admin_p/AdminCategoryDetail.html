@@ -1,0 +1,56 @@
+{% extends 'admin_p/base.html' %}
+{% block css %}
+{% endblock %}
+{%block title%} {{category.title}} {% endblock%}
+{% block body %}
+<div class="container">
+
+    <div class="delete_popup">
+        <div class="wrapper">
+            <div class="inner pt-5">
+                <h3 class="text-center mb-2">Удалить {{category.title}} ?</h3>
+                <div class="d-flex w-75 mx-auto justify-content-around">
+                    <a href="{% url 'category_delete' category.id %}" id="popup_yes" class="btn btn-danger">да,
+                        удалить</a>
+                    <a href="#" id="popup_no" class="btn btn-secondary">нет</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="d-flex justify-content-around">
+            <h2 class="text-center mb-5">Изменить категорию {{category.title}}</h2>
+            <a href="{% url 'logout' %}" class="btn float-end">выход</a>
+        </div>
+        <div class="line w-100 mb-3"></div>
+        <a href="{% url 'panel_category' %}" class="position-absolute top-1 end-0 btn btn-outline-success">назад</a>
+    </header>
+    <main>
+        <form method="post" class="mb-3">
+            {% csrf_token %}
+            {{form.as_p}}
+            <div>
+                <input type="submit" class="btn btn-info" value="Сохранить">
+                <a href="#" id="ajax_delete_category" class="btn btn-danger">удалить</a>
+            </div>
+        </form>
+        <div class="line w-100 mb-3"></div>
+        {% if products %}
+        <h3 class="mb-3">Продукты категории {{category.title}}</h3>
+        <ul>
+            {% for item in products %}
+            <li><a href="{% url 'product_panel_detail' item.id %}" class="mb-1 btn btn-outline-secondary">{{item.title}}: {{item.price}} руб.</a></li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>продукты категории <b>{{category.title}}</b> отсутствуют.</p>
+        {% endif %}
+    </main>
+</div>
+{% load static %}
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script type="text/javascript" src="{% static 'admin_p/js/admin_panel.js'%}"></script>
+
+{% endblock %}
+</html>

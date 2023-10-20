@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'category/css/normilize.css'%}">
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css'%}">
+    <link rel="stylesheet" href="{% static 'bootstrap/js/bootstrap.min.js'%}">
+    <link rel="stylesheet" href="{% static 'category/css/category_style.css'%}">
+    <title>Title</title>
+</head>
+<body>
+    <main class="main p-relative">
+        <div class="container">
+            <div class="wrapper">
+                <div class="inner">
+                <ul class="category_list text-center pt-5">
+                    {% for category in object_list %}
+                    <li class=""><a href="{% url 'category_item' category.id %}"
+                                    class="btn btn-outline-light  w-75 mb-2 btn-lg mx-auto ">{{category.title}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+
+            </div>
+
+        </div>
+        <div class="admin">
+            <div class="container">
+                <a href="{% url 'panel' %}">admin</a>
+            </div>
+            </div>
+
+    </main>
+
+</body>
+</html>

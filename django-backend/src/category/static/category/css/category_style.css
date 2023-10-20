@@ -1,0 +1,27 @@
+
+.main{
+    background: url("/static/category/images/kulinarnuyu.jpg");
+    background-size: cover; /* Растягивает изображение на весь экран и сохраняет пропорции */
+    background-position: center center; /* Выравнивание изображения по центру */
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+
+.main_menu{
+    background: url("/static/category/images/kukhnyu.jpg");
+    background-size: cover; /* Растягивает изображение на весь экран и сохраняет пропорции */
+    background-position: center center; /* Выравнивание изображения по центру */
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+.wrapper{
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.admin{
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+}

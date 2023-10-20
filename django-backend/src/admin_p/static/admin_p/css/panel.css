@@ -1,0 +1,51 @@
+.add{
+    position: relative;
+}
+
+.add::before {
+    content: ""; /* Обязательное свойство для создания псевдоэлемента */
+    position:absolute; /* Делаем псевдоэлемент блочным, чтобы он отображался рядом с текстом кнопки */
+    top: 9px;
+    left: 4px;
+    width: 20px; /* Устанавливаем ширину изображения */
+    height: 20px; /* Устанавливаем высоту изображения */
+    background: url('/admin_p/static/admin_p/images/plus-svgrepo-com.svg') no-repeat; /* Путь к вашему SVG-изображению */
+    background-size: cover; /* Масштабируем изображение для заполнения размеров */
+    margin-right: 5px; /* Расстояние между изображением и текстом кнопки */
+}
+
+.line{
+    background: #000;
+    height: 2px;
+}
+.category_list{
+    position: relative;
+}
+
+.delete_popup{
+    position: relative;
+    display: none;
+}
+
+.wrapper{
+    background: #000;
+    position:absolute;
+    height: 100vh;
+    width:100%;
+    top:0;
+    left:0;
+    z-index: 10;
+}
+
+.inner{
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -10%);
+    width: 330px;
+    height: 230px;
+    background: #fff;
+    border: 2px solid #131313;
+    border-radius: 10px;
+}
+

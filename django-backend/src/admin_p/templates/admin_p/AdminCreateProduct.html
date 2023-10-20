@@ -1,0 +1,24 @@
+{% extends 'admin_p/base.html' %}
+{% block css %}
+{% endblock %}
+{%block title%} создать продукт {% endblock%}
+{% block body %}
+<div class="container">
+    <header class="pt-3">
+        <div class="d-flex justify-content-around">
+            <h2 class="text-center mb-3">Создать продукт</h2>
+            <a href="{% url 'logout' %}" class="btn float-end">выход</a>
+        </div>
+        <div class="line w-100 mb-3"></div>
+        <a href="{% url 'panel_product' %}" class="position-absolute top-1 end-0 btn btn-outline-success">назад</a>
+    </header>
+    <main>
+        <form method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="создать" class="btn btn-info">
+        </form>
+    </main>
+</div>
+
+{% endblock %}
