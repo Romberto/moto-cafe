@@ -4,7 +4,7 @@ window.addEventListener('load', function(){
     // Optional parameters
     speed: 1200,
     loop: true,
-    effect: "cube",
+    effect: "flip",
       grabCursor: true,
       cubeEffect: {
         shadow: true,

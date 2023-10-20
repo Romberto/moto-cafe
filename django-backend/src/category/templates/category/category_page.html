@@ -17,10 +17,10 @@
     <title>{{title}}</title>
 </head>
 <body>
-<main class="main_menu ">
+<main class="main_menu" style="background-image: url({% static 'category/images/motofon.jpeg' %})">
 
     <div class="container pt-5 pb-5">
-        <a href="{% url 'category' %}" class="btn btn-success d-block w-50 mx-auto mb-5">Меню</a>
+        <a href="{% url 'category' %}" class="btn btn-secondary d-block w-50 mx-auto mb-5">Меню</a>
         <!--        <ul class="product_list pt-5 pb-3 ps-0">-->
         <!--            {% for item in current_page %}-->
         <!--            <li class="product_item d-flex flex-column align-items-center w-100 mb-3 mx-auto">-->
@@ -39,9 +39,9 @@
             <div class="swiper-wrapper">
                 <!-- Slides -->
                 {% for item in current_page %}
-                <div class="swiper-slide d-flex flex-column align-items-center w-100 mb-3 mx-auto bg-black rounded p-2">
-                    <img class="product_img w-50 mb-4" alt="фото продукта" src="{{item.photo_url}}"/>
-                    <p class="text-center text-danger mb-2 fs-2">{{item.title}}</p>
+                <div class="bg-secondary swiper-slide d-flex flex-column align-items-center w-100 mb-3 mx-auto rounded p-2">
+                    <img class="product_img w-50 mb-4 rounded-3" alt="фото продукта" src="{{item.photo_url}}"/>
+                    <p class="text-center text-primary fw-semibold mb-2 fs-2">{{item.title}}</p>
                     <p class="text-light mb-2 fw-semibold fs-3">{{item.price}}</p>
                     <p class="text-light lh-base mb-2 fs-3 d-inline">{{item.description}}</p>
 

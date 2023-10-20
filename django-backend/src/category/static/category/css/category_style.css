@@ -1,6 +1,5 @@
 
 .main{
-    background: url("/static/category/images/kulinarnuyu.jpg");
     background-size: cover; /* Растягивает изображение на весь экран и сохраняет пропорции */
     background-position: center center; /* Выравнивание изображения по центру */
     background-repeat: no-repeat;
@@ -8,7 +7,6 @@
 }
 
 .main_menu{
-    background: url("/static/category/images/kukhnyu.jpg");
     background-size: cover; /* Растягивает изображение на весь экран и сохраняет пропорции */
     background-position: center center; /* Выравнивание изображения по центру */
     background-repeat: no-repeat;
@@ -24,4 +22,7 @@
     position: absolute;
     bottom: 0;
     left: 10px;
+}
+.sw_item{
+    background: linear-gradient(to bottom, #b4ddb4 0%,#83c783 17%,#52b152 33%,#008a00 67%,#005700 88%,#002400 100%);
 }

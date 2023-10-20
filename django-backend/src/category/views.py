@@ -36,13 +36,5 @@ class CategoryItemView(View):
         title = ''
         if query_set:
             title = query_set[0]['category__title']
-        items_per_page = 10  # Количество объектов на странице
-        paginator = Paginator(query_set, items_per_page)
-        page = request.GET.get('page')  # Получение номера текущей страницы из параметра запроса
-        try:
-            current_page = paginator.page(page)
-        except EmptyPage:
-            current_page = paginator.page(1)  # Если номер страницы некорректный, отображаем первую страницу
-        except PageNotAnInteger:
-            current_page = paginator.page(1)
-        return render(request, 'category/category_page.html', {'current_page': current_page, 'title': title})
+
+        return render(request, 'category/category_page.html', {'current_page': query_set, 'title': title})
