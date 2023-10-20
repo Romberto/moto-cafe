@@ -30,7 +30,7 @@ class CategoryItemView(View):
         """
         все продукты одной категории
         """
-        query_set = Product.objects.filter(category=pk).select_related('category').values('title', 'price', 'photo_url',
+        query_set = Product.objects.filter(category=pk).select_related('category').values('title', 'price', 'photo_url','description',
                                                                                           'category__title').order_by(
             'id')
         title = ''

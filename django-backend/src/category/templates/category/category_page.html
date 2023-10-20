@@ -8,51 +8,85 @@
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css'%}">
     <link rel="stylesheet" href="{% static 'bootstrap/js/bootstrap.min.js'%}">
     <link rel="stylesheet" href="{% static 'category/css/category_style.css'%}">
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    />
+
+
     <title>{{title}}</title>
 </head>
 <body>
 <main class="main_menu ">
 
     <div class="container pt-5 pb-5">
-        <a href="{% url 'category' %}" class="btn btn-success d-block w-50 mx-auto">Меню</a>
-        <ul class="product_list pt-5 pb-3 ps-0">
-            {% for item in current_page %}
-            <li class="product_item d-flex flex-column align-items-center w-100 mb-3 mx-auto">
-                <img class="product_img w-50 mb-2" alt="фото продукта" src="{{item.photo_url}}"/>
-                <div class="d-flex flex align-items-center justify-content-around w-100 flex-sm-wrap">
-                    <p class="product_title fs-3 w-75 text-left" >{{ item.title }}</p>
-                    <p class="product_price font-weight-bold fs-2 text-success w-25">{{item.price}}</p>
+        <a href="{% url 'category' %}" class="btn btn-success d-block w-50 mx-auto mb-5">Меню</a>
+        <!--        <ul class="product_list pt-5 pb-3 ps-0">-->
+        <!--            {% for item in current_page %}-->
+        <!--            <li class="product_item d-flex flex-column align-items-center w-100 mb-3 mx-auto">-->
+        <!--                <img class="product_img w-50 mb-2" alt="фото продукта" src="{{item.photo_url}}"/>-->
+        <!--                <div class="d-flex flex align-items-center justify-content-around w-100 flex-sm-wrap">-->
+        <!--                    <p class="product_title fs-3 w-75 text-left" >{{ item.title }}</p>-->
+        <!--                    <p class="product_price font-weight-bold fs-2 text-success w-25">{{item.price}}</p>-->
+        <!--                </div>-->
+        <!--                <hr style="border: 2px solid blue;" class="w-100">-->
+        <!--            </li>-->
+
+        <!--            {% endfor %}-->
+        <!--        </ul>-->
+        <div class="swiper">
+            <!-- Additional required wrapper -->
+            <div class="swiper-wrapper">
+                <!-- Slides -->
+                {% for item in current_page %}
+                <div class="swiper-slide d-flex flex-column align-items-center w-100 mb-3 mx-auto bg-black rounded p-2">
+                    <img class="product_img w-50 mb-4" alt="фото продукта" src="{{item.photo_url}}"/>
+                    <p class="text-center text-danger mb-2 fs-2">{{item.title}}</p>
+                    <p class="text-light mb-2 fw-semibold fs-3">{{item.price}}</p>
+                    <p class="text-light lh-base mb-2 fs-3 d-inline">{{item.description}}</p>
+
+
                 </div>
-                <hr style="border: 2px solid blue;" class="w-100">
-            </li>
 
-            {% endfor %}
-        </ul>
+                {% endfor %}
+            </div>
+            <!-- If we need pagination -->
+            <div class="swiper-pagination"></div>
 
-        <!-- Отображение объектов из текущей страницы -->
-        {{ item.title }}
+            <!-- If we need navigation buttons -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
 
-        <div class="pagination mb-5 mx-auto w-50">
-            <span class="step-links">
-                {% if current_page.has_previous %}
-                    <a href="?page=1">&laquo; первая</a>
-                    <a href="?page={{ current_page.previous_page_number }}">предыдущая</a>
-                {% endif %}
-
-                <span class="current-page text-center">
-                    Страница {{ current_page.number }} из {{ current_page.paginator.num_pages }}.
-                </span>
-
-                {% if current_page.has_next %}
-                    <a href="?page={{ current_page.next_page_number }}">следующая</a>
-                    <a href="?page={{ current_page.paginator.num_pages }}">последняя &raquo;</a>
-                {% endif %}
-            </span>
+            <!-- If we need scrollbar -->
+            <div class="swiper-scrollbar"></div>
         </div>
+
+
+
+<!--        <div class="pagination mb-5 mx-auto w-50">-->
+<!--            <span class="step-links">-->
+<!--                {% if current_page.has_previous %}-->
+<!--                    <a href="?page=1">&laquo; первая</a>-->
+<!--                    <a href="?page={{ current_page.previous_page_number }}">предыдущая</a>-->
+<!--                {% endif %}-->
+
+<!--                <span class="current-page text-center">-->
+<!--                    Страница {{ current_page.number }} из {{ current_page.paginator.num_pages }}.-->
+<!--                </span>-->
+
+<!--                {% if current_page.has_next %}-->
+<!--                    <a href="?page={{ current_page.next_page_number }}">следующая</a>-->
+<!--                    <a href="?page={{ current_page.paginator.num_pages }}">последняя &raquo;</a>-->
+<!--                {% endif %}-->
+<!--            </span>-->
+<!--        </div>-->
 
     </div>
 
 </main>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+<script type="text/javascript" src="{% static 'category/js/swiper_init.js'%}"></script>
 
 
 </body>
