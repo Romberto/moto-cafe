@@ -1,15 +1,17 @@
 from django.db import models
-
+from django_resized import ResizedImageField
 from category.models import Category
+
+
+def content_file_name(instance, filename):
+    return '/'.join(['products', str(instance.category.id), filename])
 
 
 class Product(models.Model):
     title = models.CharField(max_length=200)
     price = models.DecimalField(max_digits=7, decimal_places=2)
-    photo_url = models.URLField(
-        default="https://avatars.mds.yandex.net/i?id=7d5945d1f087f0300f467e9b4eac093999aa67d0-9853689-images-thumbs&n=13")
     description = models.CharField(max_length=255)
-
+    photo = ResizedImageField(size=[500, 300], upload_to=content_file_name, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='category')
 
     def __str__(self):

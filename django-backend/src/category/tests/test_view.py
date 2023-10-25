@@ -14,14 +14,14 @@ class TestCategoryView(TestCase):
         self.category_1 = Category.objects.create(title="title_1")
         self.category_2 = Category.objects.create(title="title_2")
 
-        self.product_1 = Product.objects.create(title='title_product_1', price=1000, photo_url="https://test.png",
-                                           description="description_product_text", category=self.category_1)
+        self.product_1 = Product.objects.create(title='title_product_1', price=1000,
+                                                description="description_product_text", category=self.category_1)
 
-        self.product_2 = Product.objects.create(title='title_product_2', price=2000, photo_url="https://test.png",
-                                           description="description_product_text", category=self.category_1)
+        self.product_2 = Product.objects.create(title='title_product_2', price=2000,
+                                                description="description_product_text", category=self.category_1)
 
-        self.product_3 = Product.objects.create(title='title_product_3', price=1500, photo_url="https://test.png",
-                                           description="description_product_text", category=self.category_2)
+        self.product_3 = Product.objects.create(title='title_product_3', price=1500,
+                                                description="description_product_text", category=self.category_2)
 
     def test_category_view_get(self):
         """
@@ -51,18 +51,17 @@ class TestCategoryView(TestCase):
             {
                 'title': 'title_product_1',
                 'price': Decimal('1000.00'),
-                'photo_url': 'https://test.png',
+                'photo': '',
                 'description': 'description_product_text',
                 'category__title': 'title_1'
             },
             {
                 'title': 'title_product_2',
                 'price': Decimal('2000.00'),
-                'photo_url': 'https://test.png',
+                'photo': '',
                 'description': 'description_product_text',
                 'category__title': 'title_1'
             }
         ]
         self.assertEquals(response.context['current_page'][0], expected_data[0])
         self.assertEquals(response.context['current_page'][1], expected_data[1])
-

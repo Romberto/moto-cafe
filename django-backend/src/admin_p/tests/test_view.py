@@ -12,13 +12,13 @@ class TestAdminPanel(TestCase):
         self.category_1 = Category.objects.create(title="title_1")
         self.category_2 = Category.objects.create(title="title_2")
 
-        self.product_1 = Product.objects.create(title='title_product_1', price=1000, photo_url="https://test.png",
+        self.product_1 = Product.objects.create(title='title_product_1', price=1000,
                                                 description="description_product_text", category=self.category_1)
 
-        self.product_2 = Product.objects.create(title='title_product_2', price=2000, photo_url="https://test.png",
+        self.product_2 = Product.objects.create(title='title_product_2', price=2000,
                                                 description="description_product_text", category=self.category_1)
 
-        self.product_3 = Product.objects.create(title='title_product_3', price=1500, photo_url="https://test.png",
+        self.product_3 = Product.objects.create(title='title_product_3', price=1500,
                                                 description="description_product_text", category=self.category_2)
 
     def test_admin_panel_view_get_no_login(self):

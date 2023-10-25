@@ -8,7 +8,7 @@ from product.serializers import ProductSerializers, ProductSerializerPost
 
 
 class ProductViewSet(ModelViewSet):
-    queryset = Product.objects.select_related('category').only('id', 'title', 'price', 'photo_url', 'description',
+    queryset = Product.objects.select_related('category').only('id', 'title', 'price', 'description', 'photo',
                                                                'category', 'category__title')
     serializer_class = ProductSerializers
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]

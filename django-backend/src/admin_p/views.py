@@ -1,3 +1,5 @@
+from PIL import Image
+
 import django_filters
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -102,14 +104,17 @@ class PanelProductDetailView(View):
         return render(request, 'admin_p/AdminProductDetail.html', {'product': product, 'form': form})
 
     def post(self, request, pk):
-        form = ProductForm(request.POST)
+        form = ProductForm(request.POST, request.FILES)
         product = Product.objects.get(id=pk)
         if form.is_valid():
             product.title = form.cleaned_data['title']
             product.price = form.cleaned_data['price']
-            product.photo_url = form.cleaned_data['photo_url']
             product.description = form.cleaned_data['description']
             product.category = form.cleaned_data['category']
+            product.photo = form.cleaned_data['photo']
+            print(form.cleaned_data)
+            print(form.cleaned_data['photo'])
+            print('*'*60)
             product.save()
             return redirect(to='/panel/products/')
         else:

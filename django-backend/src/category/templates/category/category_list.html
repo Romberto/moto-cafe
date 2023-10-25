@@ -8,32 +8,75 @@
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css'%}">
     <link rel="stylesheet" href="{% static 'bootstrap/js/bootstrap.min.js'%}">
     <link rel="stylesheet" href="{% static 'category/css/category_style.css'%}">
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"
+    />
     <title>Title</title>
 </head>
 <body>
-    <main class="main p-relative" style="background-image: url({% static 'category/images/motofon.jpeg' %})">
-        <div class="container">
-            <div class="wrapper">
-                <div class="inner">
-                <ul class="category_list text-center pt-5">
-                    {% for category in object_list %}
-                    <li class=""><a href="{% url 'category_item' category.id %}"
-                                    class="btn btn-outline-light  w-75 mb-2 btn-lg mx-auto ">{{category.title}}</a></li>
-                    {% endfor %}
-                </ul>
+<main class="main p-relative pt-5" style="background-image: url({% static 'category/images/kulinarnuyu.jpg' %})">
+    <div class="container">
+        <!--            <div class="wrapper">-->
+        <!--                <div class="inner">-->
+        <!--                <ul class="category_list text-center pt-5">-->
+        <!--                    {% for category in object_list %}-->
+        <!--                    <li class=""><a href="{% url 'category_item' category.id %}"-->
+        <!--                                    class="btn btn-outline-light  w-75 mb-2 btn-lg mx-auto ">{{category.title}}</a></li>-->
+        <!--                    {% endfor %}-->
+        <!--                </ul>-->
+        <!--            </div>-->
+
+        <h1 class="text-center mb-5 text-light">Название кафе</h1>
+        <div class="accordion mb-5" id="accordionExample">
+
+            {% for item in object_list %}
+            <div class="accordion-item">
+                <h2 class="accordion-header" data-category="{{item.id}}">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse{{item.id}}" aria-expanded="true"
+                            aria-controls="collapse{{item.id}}">
+                        {{item.title}}
+                    </button>
+                </h2>
+                <div id="collapse{{item.id}}" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                     data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <div class="swiper_inner">
+                            <div class="swiper mySwiper">
+                                <div class="swiper-wrapper" id="products_{{item.id}}">
+
+                                </div>
+                                <div class="swiper-pagination"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-
-
-            </div>
-
+            {% endfor %}
         </div>
-        <div class="admin">
-            <div class="container">
-                <a href="{% url 'panel' %}">admin</a>
-            </div>
-            </div>
 
-    </main>
+    </div>
+
+    </div>
+    <div class="admin">
+        <div class="container">
+            <a href="{% url 'panel' %}">admin</a>
+        </div>
+    </div>
+
+</main>
+<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+<script
+  src="https://code.jquery.com/jquery-3.7.1.min.js"
+  integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+  crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+<script type="text/javascript" src="{% static 'category/js/menu_swiper_init.js'%}"></script>
+
+
+
 
 </body>
 </html>

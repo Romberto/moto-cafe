@@ -15,14 +15,14 @@ class TestProductViewSet(APITestCase):
         self.category_1 = Category.objects.create(title="title_1")
         self.category_2 = Category.objects.create(title="title_2")
 
-        self.product_1 = Product.objects.create(title='title_product_1', price=1000, photo_url="https://test.png",
-                                           description="description_product_text", category=self.category_1)
+        self.product_1 = Product.objects.create(title='title_product_1', price=1000,
+                                                description="description_product_text", category=self.category_1)
 
-        self.product_2 = Product.objects.create(title='title_product_2', price=2000, photo_url="https://test.png",
-                                           description="description_product_text", category=self.category_1)
+        self.product_2 = Product.objects.create(title='title_product_2', price=2000,
+                                                description="description_product_text", category=self.category_1)
 
-        self.product_3 = Product.objects.create(title='title_product_3', price=1500, photo_url="https://test.png",
-                                           description="description_product_text", category=self.category_2)
+        self.product_3 = Product.objects.create(title='title_product_3', price=1500,
+                                                description="description_product_text", category=self.category_2)
 
     def test_api_get_all_product(self):
         url = reverse('product-list')
@@ -36,34 +36,43 @@ class TestProductViewSet(APITestCase):
     def test_api_create_product_no_login(self):
         category_1 = Category.objects.create(title="title_1")
         url = reverse('product-list')
-
         data = {
             'title': "test_title",
             'price': 1000,
-            'photo_url': "https://rrrtest.tr",
+            'photo': None,
             'description': "test_description",
             'category': category_1.id
         }
-        response = self.client.post(url, data)
+        response = self.client.post(url, data, format="json")
         self.assertEquals(response.status_code, status.HTTP_403_FORBIDDEN)
         count = Product.objects.count()
         self.assertEquals(count, 3)
 
-
     def test_api_create_product_login(self):
         category_1 = Category.objects.create(title="title_1")
         url = reverse('product-list')
-
         data = {
             'title': "test_title",
             'price': 1000,
-            'photo_url': "https://rrrtest.tr",
+            'photo': None,
             'description': "test_description",
-            'category': category_1.id
+            'category': self.category_1.id
         }
         self.assertTrue(self.client.login(username='testuser_1', password='1234sde2'))
-        response = self.client.post(url, data)
+        response = self.client.post(url, data, format="json")
         self.assertEquals(response.status_code, status.HTTP_201_CREATED)
         count = Product.objects.count()
         self.assertEquals(count, 4)
 
+    # def test_create_product(self):
+    #     url = reverse('product-list')  # Замените на ваш реальный URL
+    #     data = {
+    #         'title': 'Test Product',
+    #         'price': 100.0,
+    #         'description': 'Test Description',
+    #         'photo': None,  # Передайте данные о фото, если необходимо
+    #         'category': self.category_1.id,  # Замените на реальный ID категории
+    #     }
+    #     self.assertTrue(self.client.login(username='testuser_1', password='1234sde2'))
+    #     response = self.client.post(url, data, format='json')
+    #     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
