@@ -15,7 +15,7 @@
         <a href="{% url 'panel_category' %}" class="position-absolute top-1 end-0 btn btn-outline-success">назад</a>
     </header>
     <main>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{form.as_p}}
             <input type="submit" value="создать" class="btn btn-info">
