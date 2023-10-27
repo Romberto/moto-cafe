@@ -25,7 +25,6 @@ from category.views import CategoryViewSet
 from product.views import ProductViewSet
 
 router = SimpleRouter()
-router.register(r'category', CategoryViewSet, basename='category')
 router.register(r'product', ProductViewSet, basename='product')
 
 urlpatterns = [
