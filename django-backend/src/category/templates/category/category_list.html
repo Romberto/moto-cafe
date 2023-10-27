@@ -15,25 +15,63 @@
     <title>Title</title>
 </head>
 <body>
+<style>
+  .times::before {
+    content: ""; /* Обязательное свойство для создания псевдоэлемента */
+    position:absolute; /* Делаем псевдоэлемент блочным, чтобы он отображался рядом с текстом кнопки */
+    top: -1px;
+    left: -10px;
+    width: 20px; /* Устанавливаем ширину изображения */
+    height: 20px; /* Устанавливаем высоту изображения */
+    background: url({% static 'category/images/clock-check-svgrepo-com.svg' %}) no-repeat; /* Путь к вашему SVG-изображению */
+    background-size: cover; /* Масштабируем изображение для заполнения размеров */
+    margin-right: 5px; /* Расстояние между изображением и текстом кнопки */
+}
+  .price::before {
+    content: ""; /* Обязательное свойство для создания псевдоэлемента */
+    position:absolute; /* Делаем псевдоэлемент блочным, чтобы он отображался рядом с текстом кнопки */
+    top: 1px;
+    right: -21px;
+    width: 15px;
+    height: 15px; /* Устанавливаем высоту изображения */
+    background: url({% static 'category/images/ruble-sign-svgrepo-com.svg' %}) no-repeat; /* Путь к вашему SVG-изображению */
+    background-size: cover; /* Масштабируем изображение для заполнения размеров */
+    margin-right: 5px; /* Расстояние между изображением и текстом кнопки */
+}
+  .price::after {
+    content: ""; /* Обязательное свойство для создания псевдоэлемента */
+    position:absolute; /* Делаем псевдоэлемент блочным, чтобы он отображался рядом с текстом кнопки */
+    top: 1px;
+    left: -21px;
+    width: 15px;
+    height: 15px; /* Устанавливаем высоту изображения */
+    background: url({% static 'category/images/price-tag-svgrepo-com.svg' %}) no-repeat; /* Путь к вашему SVG-изображению */
+    background-size: cover; /* Масштабируем изображение для заполнения размеров */
+    margin-right: 5px; /* Расстояние между изображением и текстом кнопки */
+}
+  .title::after {
+    content: ""; /* Обязательное свойство для создания псевдоэлемента */
+    position:absolute; /* Делаем псевдоэлемент блочным, чтобы он отображался рядом с текстом кнопки */
+    top: 3px;
+    left: -7px;
+    width: 15px;
+    height: 15px; /* Устанавливаем высоту изображения */
+    background: url({% static 'category/images/food-cover-svgrepo-com.svg' %}) no-repeat; /* Путь к вашему SVG-изображению */
+    background-size: cover; /* Масштабируем изображение для заполнения размеров */
+    margin-right: 5px; /* Расстояние между изображением и текстом кнопки */
+    display: none;
+}
+
+</style>
 <main class="main p-relative pt-5" style="background-image: url({% static 'category/images/kulinarnuyu.jpg' %})">
     <div class="container">
-        <!--            <div class="wrapper">-->
-        <!--                <div class="inner">-->
-        <!--                <ul class="category_list text-center pt-5">-->
-        <!--                    {% for category in object_list %}-->
-        <!--                    <li class=""><a href="{% url 'category_item' category.id %}"-->
-        <!--                                    class="btn btn-outline-light  w-75 mb-2 btn-lg mx-auto ">{{category.title}}</a></li>-->
-        <!--                    {% endfor %}-->
-        <!--                </ul>-->
-        <!--            </div>-->
-
-        <h1 class="text-center mb-5 text-light">Название кафе</h1>
-        <div class="accordion mb-5" id="accordionExample">
+        <h1 class="text-center mb-5 bg-warning d-inline-block mx-auto rounded p-1 fst-italic" style="color:#052c65;">Название кафе</h1>
+        <div class="accordion mb-5 " id="accordionExample">
 
             {% for item in object_list %}
-            <div class="accordion-item">
+            <div class="accordion-item z-3">
                 <h2 class="accordion-header" data-category="{{item.id}}">
-                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    <button class="accordion-button bg-warning" type="button" data-bs-toggle="collapse"
                             data-bs-target="#collapse{{item.id}}" aria-expanded="true"
                             aria-controls="collapse{{item.id}}">
                         {{item.title}}
@@ -44,7 +82,7 @@
                     <div class="accordion-body">
                         <div class="swiper_inner">
                             <div class="swiper mySwiper">
-                                <div class="swiper-wrapper" id="products_{{item.id}}">
+                                <div class="swiper-wrapper position-relative " id="products_{{item.id}}">
 
                                 </div>
                                 <div class="swiper-pagination"></div>

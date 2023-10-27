@@ -24,18 +24,3 @@ class CategoryView(ListView):
     model = Category
 
 
-class CategoryItemView(View):
-
-    def get(self, request, pk):
-        """
-        все продукты одной категории
-        """
-        query_set = Product.objects.filter(category=pk).select_related('category').values('title', 'price', 'photo',
-                                                                                          'description',
-                                                                                          'category__title').order_by(
-            'id')
-        title = ''
-        if query_set:
-            title = query_set[0]['category__title']
-
-        return render(request, 'category/category_page.html', {'current_page': query_set, 'title': title})

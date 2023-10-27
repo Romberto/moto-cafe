@@ -28,8 +28,12 @@ class TestProductViewSet(APITestCase):
         url = reverse('product-list')
         response = self.client.get(url)
         self.assertEquals(response.status_code, status.HTTP_200_OK)
-        data = ProductSerializers([self.product_1, self.product_2, self.product_3], many=True).data
-        self.assertEquals(data, response.data)
+        expected_data = ProductSerializers([self.product_1, self.product_2, self.product_3], many=True).data
+        testserver_url = "http://testserver"
+        for data in expected_data:
+            if 'photo' in data:
+                data['photo'] = testserver_url + data['photo']
+        self.assertEquals(expected_data, response.data)
         count = Product.objects.count()
         self.assertEquals(count, 3)
 

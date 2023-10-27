@@ -8,10 +8,10 @@ class ProductSerializers(ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ('id', 'title', 'price', 'photo', 'description', 'category', 'category_title')
+        fields = ('id', 'title', 'price', 'photo', 'description', 'category', 'times','category_title')
 
 
 class ProductSerializerPost(ModelSerializer):
     class Meta:
         model = Product
-        fields = ('id', 'title', 'price', 'photo', 'description', 'category')
+        fields = ('id', 'title', 'price', 'photo', 'description', 'times', 'category')

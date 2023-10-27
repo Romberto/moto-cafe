@@ -111,10 +111,8 @@ class PanelProductDetailView(View):
             product.price = form.cleaned_data['price']
             product.description = form.cleaned_data['description']
             product.category = form.cleaned_data['category']
+            product.times = form.cleaned_data['times']
             product.photo = form.cleaned_data['photo']
-            print(form.cleaned_data)
-            print(form.cleaned_data['photo'])
-            print('*'*60)
             product.save()
             return redirect(to='/panel/products/')
         else:
