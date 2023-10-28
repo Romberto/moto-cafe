@@ -124,22 +124,28 @@ class TestAdminPanel(TestCase):
         self.assertEquals(response.status_code, 302)
 
 # todo проблемы с post запросом в тестах
-    # def test_product_detail_post_login(self):
-    #     """
-    #     test put product
-    #     """
-    #     url = reverse('product_panel_detail', kwargs={'pk': self.product_1.id})
-    #     data = {
-    #         "title": "title_54",
-    #         'price': 2000,
-    #         "description": "description",
-    #         "category": self.category_1.id
-    #     }
-    #     self.assertTrue(self.client.login(username='testuser1', password='1234erSDD'))
-    #     response = self.client.post(url, data)
-    #     self.assertEquals(response.status_code, 200)
-    #     self.product_1.refresh_from_db()
-    #     self.assertEquals(self.product_1.title, 'title_54')
+#     def test_product_detail_post_login(self):
+#         """
+#         test put product
+#         """
+#         url = reverse('product_panel_detail', kwargs={'pk': self.product_1.id})
+#         image = self.product_1.photo.path
+#         image_file = SimpleUploadedFile(image, b"image_content", content_type="image/jpeg")
+#
+#         # Добавьте его в данные для POST-запроса
+#         data = {
+#             "title": "title_54",
+#             'price': 2000,
+#             'photo': image,
+#             "description": "description",
+#             "times": 10,
+#             "category": self.category_1.id
+#         }
+#         self.assertTrue(self.client.login(username='testuser1', password='1234erSDD'))
+#         response = self.client.post(url, data, content_type="application/json")
+#         self.assertEquals(response.status_code, 302)
+#         self.product_1.refresh_from_db()
+#         self.assertEquals(self.product_1.title, 'title_54')
 
     def test_product_create_view_get_no_login(self):
         url = reverse('panel_product_create')
