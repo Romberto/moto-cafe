@@ -9,7 +9,8 @@ services:
     volumes:
       - ./persistentdata/static:/var/www/static # <--here
       - ./persistentdata/media:/var/www/media # <--here
-      - ./persistentdata/db:/root/db/
+    environment:
+      - DATABASE_URL=./persistentdata/db
   nginx:
     restart: always
     build:
@@ -29,14 +30,4 @@ services:
     volumes:
       - ./persistentdata/certbot/conf:/etc/letsencrypt # <--here
       - ./persistentdata/certbot/www:/var/www/certbot # <--here
-  sqlite3:
-    container_name: sqlite3_container
-    image: nouchka/sqlite3:latest
-    stdin_open: true
-    tty: true
-    volumes:
-      #Modify following line
-      - ./persistentdata/db:/root/db/
-    ports:
-      - '9000:9000' # expose ports - HOST:CONTAINER
-    restart: unless-stopped
+
