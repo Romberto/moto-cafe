@@ -10,8 +10,6 @@ services:
       - ./persistentdata/static:/var/www/static # <--here
       - ./persistentdata/media:/var/www/media # <--here
       - ./persistentdata/db:/var/www/db
-    environment:
-      - DATABASE_URL=/var/www/db/db.sqlite3
   nginx:
     restart: always
     build:
