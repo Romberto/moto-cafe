@@ -2,7 +2,16 @@ from PIL import Image
 from django import forms
 
 from product.models import Product
+from django.core.exceptions import ValidationError
 
+def photo_valid(value):
+    print(value.name)
+    ext = value.name.split('.')[-1].lower()
+    print('*'*60)
+    print(ext)
+    print('*'*60)
+    if ext not in ['png', 'jpg', 'jpeg']:
+        raise ValidationError("расширение файла может быть 'png', 'jpg', 'jpeg'")
 
 class ProductForm(forms.ModelForm):
     class Meta:
@@ -30,19 +39,6 @@ class ProductForm(forms.ModelForm):
         self.fields['category'].label = "категория продукта"
         self.fields['category'].widget.attrs['class'] = 'form-select mb-2 w-50'
 
-    def clean_image_field(self):
-        image = self.cleaned_data.get('photo')
+    photo = forms.ImageField(validators=[photo_valid])
 
-        # Проверяем, что изображение существует
-        if image:
-            # Открываем изображение с помощью библиотеки PIL (Pillow)
-            img = Image.open(image)
 
-            # Изменяем размер изображения, сохраняя пропорции
-            max_size = (800, 600)  # Замените на желаемые размеры
-            img.thumbnail(max_size)
-
-            # Сохраняем измененное изображение
-            img.save(image.path)
-
-        return image
