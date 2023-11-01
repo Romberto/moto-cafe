@@ -9,7 +9,12 @@ services:
     volumes:
       - ./persistentdata/static:/var/www/static # <--here
       - ./persistentdata/media:/var/www/media # <--here
-      - ./persistentdata/db:/var/www/db
+  postgresql-db:
+    restart: always
+    image: postgres
+    volumes:
+      - ./persistentdata/db:/var/lib/postgresql/data
+    env_file:  ./postgresql-db/.pg-env  # why - see the next step
   nginx:
     restart: always
     build:

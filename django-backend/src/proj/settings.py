@@ -24,7 +24,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()
 
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
-print(SECRET_KEY)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -99,11 +98,11 @@ WSGI_APPLICATION = 'proj.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': str(os.getenv('NAME_DB')),
-        'USER': str(os.getenv('USER_DB')),
-        'PASSWORD': str(os.getenv('PASSWORD_DB')),
-        'HOST': str(os.getenv('HOST_DB')),
-        'PORT': str(os.getenv('PORT_DB')),
+        'NAME': 'moto_base',
+        'USER': 'moto_db_user',
+        'PASSWORD': 'wer324cvG',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
