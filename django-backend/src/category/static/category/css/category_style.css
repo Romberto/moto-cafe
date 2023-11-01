@@ -1,7 +1,5 @@
 
-:root{
-   --swiper-theme-color: #ffc107;
-}
+
 
 .main{
     background-size: cover; /* Растягивает изображение на весь экран и сохраняет пропорции */
