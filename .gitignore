@@ -3,7 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 .env
-/src/media/
+/django-backend/src/media
 /persistentdata
 
 /postgresql-db
