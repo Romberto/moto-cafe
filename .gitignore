@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 .env
+/src/media/
 /persistentdata
 
 /postgresql-db
