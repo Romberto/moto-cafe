@@ -12,9 +12,10 @@ from product.models import Product
 
 
 class CategoryViewSet(ModelViewSet):
-    queryset = Category.objects.all()
+    queryset = Category.objects.all().order_by('id')
     serializer_class = CategorySerializers
     permission_classes = [IsAuthenticatedOrReadOnly]
+
 
 
 class CategoryView(ListView):

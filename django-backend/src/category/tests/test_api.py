@@ -15,6 +15,7 @@ class TestCategoryTestCase(APITestCase):
 
     def test_category_api_get_all(self):
         url = reverse('category-list')
+        self.assertTrue(self.client.login(username="testuser1", password="12er43deAS"))
         response = self.client.get(url)
         self.assertEquals(status.HTTP_200_OK, response.status_code)
         expected_data = CategorySerializers([self.category1, self.category2], many=True)
@@ -23,7 +24,8 @@ class TestCategoryTestCase(APITestCase):
         self.assertEquals(count, 2)
 
     def test_api_get_one_category(self):
-        url = reverse('category-detail',kwargs={"pk": 1})
+        url = reverse('category-detail', kwargs={"pk": self.category1.id})
+        self.assertTrue(self.client.login(username="testuser1", password="12er43deAS"))
         response = self.client.get(url)
         self.assertEquals(response.status_code, status.HTTP_200_OK)
         expected_data = CategorySerializers(self.category1).data
@@ -47,18 +49,18 @@ class TestCategoryTestCase(APITestCase):
         self.assertEquals(count, 3)
 
     def test_api_put_category_no_login(self):
-        url = reverse('category-detail', kwargs={"pk": 1})
+        url = reverse('category-detail', kwargs={"pk": self.category1.id})
         data = {'title': 'new_tile'}
         response = self.client.put(url, data)
         self.assertEquals(response.status_code, status.HTTP_403_FORBIDDEN)
-        obj = Category.objects.get(id=1)
+        obj = Category.objects.get(id=self.category1.id)
         self.assertNotEquals(obj.title, "new_tile")
 
     def test_api_put_category_login(self):
-        url = reverse('category-detail', kwargs={"pk": 1})
+        url = reverse('category-detail', kwargs={"pk": self.category1.id})
         data = {'title': 'new_tile'}
         self.assertTrue(self.client.login(username="testuser1", password="12er43deAS"))
         response = self.client.put(url, data)
         self.assertEquals(response.status_code, status.HTTP_200_OK)
-        obj = Category.objects.get(id=1)
+        obj = Category.objects.get(id=self.category1.id)
         self.assertEquals(obj.title, "new_tile")

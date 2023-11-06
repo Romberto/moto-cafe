@@ -86,10 +86,10 @@ class TestAdminPanel(TestCase):
         response = self.client.get(url, data)
         self.assertEquals(response.status_code, 200)
         expected_data = [
-            {'id': 1,
+            {'id': self.product_1.id,
              'title': 'title_product_1',
              'category__title': 'title_1'},
-            {'id': 2,
+            {'id': self.product_2.id,
              'title': 'title_product_2',
              'category__title': 'title_1'}
         ]
