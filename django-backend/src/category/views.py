@@ -12,7 +12,7 @@ from product.models import Product
 
 
 class CategoryViewSet(ModelViewSet):
-    queryset = Category.objects.all().order_by('id')
+    queryset = Category.objects.all()
     serializer_class = CategorySerializers
     permission_classes = [IsAuthenticatedOrReadOnly]
 

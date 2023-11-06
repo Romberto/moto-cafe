@@ -7,10 +7,13 @@ from django.urls import reverse
 from category.models import Category
 from product.models import Product
 
+from django.contrib.auth.models import Group
 
 class TestAdminPanel(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username="testuser1", password='1234erSDD')
+        self.my_group = Group.objects.create(name='Admins')
+        self.my_group.user_set.add(self.user)
         self.category_1 = Category.objects.create(title="title_1")
         self.category_2 = Category.objects.create(title="title_2")
 

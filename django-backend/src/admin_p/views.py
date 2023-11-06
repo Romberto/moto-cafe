@@ -8,7 +8,8 @@ from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, DeleteView
-
+from django.http import HttpResponseForbidden
+from django.contrib.auth.decorators import user_passes_test
 from admin_p.decorators import custom_login_required
 from category.forms import CategoryForm
 from category.models import Category
@@ -16,13 +17,22 @@ from product.forms import ProductForm
 from product.models import Product
 
 
+# представление принимае запрос на вход в панель администратора
+# и разделяет права доступы официантам и администраторам
 @method_decorator(login_required, name='dispatch')
 class PanelView(View):
     def get(self, request):
-        return render(request, 'admin_p/AdminPanel.html')
+        if request.user.groups.filter(name='Admins').exists():
+            return render(request, 'admin_p/AdminPanel.html')
+        else:
+            return HttpResponseForbidden("У вас нет прав доступа к этой странице.")
+
+def user_is_admin(user):
+    return user.groups.filter(name='Admins').exists()
 
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(user_is_admin, login_url='/'), name='dispatch')
 class PanelCategoryView(ListView):
     model = Category
     template_name = 'admin_p/AdminCategories.html'
@@ -37,6 +47,7 @@ class ProductFilter(django_filters.FilterSet):
 
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(user_is_admin, login_url='/'), name='dispatch')
 class PanelProductView(ListView):
     """
     все продукты с фильтром по категориям и пагинацией
@@ -64,6 +75,7 @@ class PanelProductView(ListView):
 
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(user_is_admin, login_url='/'), name='dispatch')
 class PanelCategoryDetailView(View):
 
     def get(self, request, pk):
@@ -88,6 +100,7 @@ class PanelCategoryDetailView(View):
 
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(user_is_admin, login_url='/'), name='dispatch')
 class CategoryCreateView(CreateView):
     model = Category
     form_class = CategoryForm
@@ -96,6 +109,7 @@ class CategoryCreateView(CreateView):
 
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(user_is_admin, login_url='/'), name='dispatch')
 class PanelProductDetailView(View):
 
     def get(self, request, pk):
@@ -121,6 +135,7 @@ class PanelProductDetailView(View):
 
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(user_is_admin, login_url='/'), name='dispatch')
 class ProductCreateView(CreateView):
     model = Product
     form_class = ProductForm
@@ -129,6 +144,7 @@ class ProductCreateView(CreateView):
 
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(user_is_admin, login_url='/'), name='dispatch')
 class ProductDeleteView(View):
     def get(self, request, pk):
         Product.objects.get(id=pk).delete()
@@ -136,6 +152,7 @@ class ProductDeleteView(View):
 
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(user_is_admin, login_url='/'), name='dispatch')
 class CategoryDeleteView(View):
 
     def get(self, request, pk):
