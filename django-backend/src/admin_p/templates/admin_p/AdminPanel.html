@@ -31,7 +31,7 @@
     <main class="pb-4 pt-2">
 
         <a class="btn btn-success d-block w-50 mx-auto mb-3" href="{% url 'category' %}">меню</a>
-        <ul class="model_list d-flex flex-column align-items-center">
+        <ul class="model_list d-flex flex-column align-items-center ps-0 mb-3">
             <li class="model_item d-flex mb-3 align-items-center">
                 <a href="{% url 'panel_category' %}" class="btn btn-outline-success text-capitalize me-5">категории</a>
                 <a href="{% url 'panel_category_create' %}" class="add btn btn-outline-success ps-4">добавить</a>
@@ -41,6 +41,35 @@
                 <a href="{% url 'panel_product_create' %}" class="add btn btn-outline-success ps-4">добавить</a>
             </li>
         </ul>
+        <section class="table">
+            <div class="table__block">
+
+                {% if tables %}
+                    <p class="table__title text-center mb-2">Сколько столов добавить ?</p>
+                    <form class="table__input quantity w-50 mx-auto text-center" method="post">
+                        {% csrf_token %}
+                        <input name="quantity" min="1" max="30" required type="number" class="form-control quantity__input w-25 mx-auto mb-2">
+                        <input type="submit" class="quantity__button btn btn-danger mx-auto" value="создать столы"/>
+                    </form>
+                    <ul class="tables row align-items-start justify-content-around ps-0">
+                        {% for table in tables %}
+                            <li class="col-3 mb-2 ms-2 me-2">
+                                <a href="{% url 'panel_table_detail' table.id  %}" class="tables__item p-2 btn btn-danger w-100 ps-0 pe-0">{{table.name}}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                <p class="text-center mb-2">создайте столы, чтобы официанты могли работать</p>
+                <p class="table__title text-center mb-2">Сколько столов создать?</p>
+                <form class="table__input quantity w-50 mx-auto text-center" method="post">
+                    {% csrf_token %}
+                    <input name="quantity" min="1" max="30" required type="number" class="form-control quantity__input w-25 mx-auto mb-2">
+                    <input type="submit" class="quantity__button btn btn-danger mx-auto" value="создать столы"/>
+                </form>
+                {% endif %}
+            </div>
+        </section>
+
     </main>
 </div>
 

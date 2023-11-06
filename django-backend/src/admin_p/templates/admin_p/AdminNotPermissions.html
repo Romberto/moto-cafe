@@ -1,0 +1,11 @@
+{% extends 'admin_p/base.html'%}
+
+{% load static %}
+
+{%block title%} Ограничение прав {% endblock %}
+{% block body %}
+  <div class="container">
+    <p class="text-center mt-2 mb-2">У вас нет прав для посещения этой страницы</p>
+    <a href="{% url 'logout' %}" class="btn float-end">назад</a>
+  </div>
+{% endblock%}
