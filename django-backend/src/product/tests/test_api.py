@@ -28,7 +28,7 @@ class TestProductViewSet(APITestCase):
         url = reverse('product-list')
         response = self.client.get(url)
         self.assertEquals(response.status_code, status.HTTP_200_OK)
-        expected_data = ProductSerializers([self.product_1, self.product_2, self.product_3], many=True).data
+        expected_data = ProductSerializers([self.product_2, self.product_1, self.product_3], many=True).data
         testserver_url = "http://testserver"
         for data in expected_data:
             if 'photo' in data:

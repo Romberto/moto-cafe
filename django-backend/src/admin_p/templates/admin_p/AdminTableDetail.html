@@ -1,0 +1,14 @@
+{% extends 'admin_p/base.html'%}
+{% load static %}
+
+{% block title %} стол №{{objects.name}} {% endblock %}
+{% block body %}
+    <div class="container pt-3">
+        <h1 class="text-center">стол {{object.name}}</h1>
+        <p>
+            <a href="{% url 'panel' %}" class="btn btn-success">назад</a>
+            <a href="{% url 'delete_table' object.id %}" class="btn btn-danger">удалить стол</a>
+        </p>
+
+    </div>
+{% endblock %}

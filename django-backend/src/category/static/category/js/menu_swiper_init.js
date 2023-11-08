@@ -25,6 +25,7 @@ $('.accordion-header').on('click', function(e){
         success: function(response){
 
             if (response.length > 0) {
+                console.log(response)
               category_block.empty();
                 $.each(response, function(index, item) {
                     item_block = `

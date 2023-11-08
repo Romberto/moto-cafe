@@ -5,11 +5,8 @@ from product.models import Product
 from django.core.exceptions import ValidationError
 
 def photo_valid(value):
-    print(value.name)
+
     ext = value.name.split('.')[-1].lower()
-    print('*'*60)
-    print(ext)
-    print('*'*60)
     if ext not in ['png', 'jpg', 'jpeg']:
         raise ValidationError("расширение файла может быть 'png', 'jpg', 'jpeg'")
 

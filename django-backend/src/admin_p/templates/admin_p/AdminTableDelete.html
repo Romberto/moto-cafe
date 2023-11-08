@@ -1,0 +1,24 @@
+{% extends 'admin_p/base.html' %}
+
+{% block title%} Удалить стол {%endblock%}
+
+{%  block body %}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Удаление стола #{{object.name}}</h5>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                <div class="alert alert-warning" role="alert">
+                    Вы действительно хотите удалить стол <strong>{{ object.name }}</strong> ?
+                </div>
+                <a href="{% url 'panel_table_detail' object.id%}" class="btn btn-success">назад</a>
+                <button type="submit" class="btn btn-danger">Удалить</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

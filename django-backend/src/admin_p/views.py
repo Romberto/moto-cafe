@@ -8,21 +8,56 @@ from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, DeleteView
-
+from django.http import HttpResponseForbidden
+from django.contrib.auth.decorators import user_passes_test
 from admin_p.decorators import custom_login_required
+from admin_p.models import TableModel
 from category.forms import CategoryForm
 from category.models import Category
 from product.forms import ProductForm
 from product.models import Product
+from django.http import HttpResponse
 
 
+# представление принимае запрос на вход в панель администратора
+# и разделяет права доступы официантам и администраторам
 @method_decorator(login_required, name='dispatch')
 class PanelView(View):
     def get(self, request):
-        return render(request, 'admin_p/AdminPanel.html')
+        if request.user.groups.filter(name='Admins').exists():
+            tables = TableModel.objects.all()
+            data = {'tables': tables}
+            return render(request, 'admin_p/AdminPanel.html', data)
+        else:
+            return render(request, 'admin_p/AdminNotPermissions.html')
+
+    def post(self, request):
+        if request.user.groups.filter(name='Admins').exists():
+            quantity = request.POST.get('quantity')
+            if quantity:
+                count = TableModel.objects.count()
+                if not count:
+                    start = 1
+                    end = int(quantity) + 1
+                    for item in range(start, end):
+                        TableModel.objects.create(name=str(item))
+                else:
+                    start = count + 1
+                    end = start + int(quantity) + 1
+                    for item in range(start, end):
+                        TableModel.objects.create(name=str(item))
+
+                return redirect('panel')
+        else:
+            return render(request, 'admin_p/AdminNotPermissions.html')
+
+
+def user_is_admin(user):
+    return user.groups.filter(name='Admins').exists()
 
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(user_is_admin, login_url='/'), name='dispatch')
 class PanelCategoryView(ListView):
     model = Category
     template_name = 'admin_p/AdminCategories.html'
@@ -37,6 +72,7 @@ class ProductFilter(django_filters.FilterSet):
 
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(user_is_admin, login_url='/'), name='dispatch')
 class PanelProductView(ListView):
     """
     все продукты с фильтром по категориям и пагинацией
@@ -64,6 +100,7 @@ class PanelProductView(ListView):
 
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(user_is_admin, login_url='/'), name='dispatch')
 class PanelCategoryDetailView(View):
 
     def get(self, request, pk):
@@ -88,6 +125,7 @@ class PanelCategoryDetailView(View):
 
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(user_is_admin, login_url='/'), name='dispatch')
 class CategoryCreateView(CreateView):
     model = Category
     form_class = CategoryForm
@@ -96,6 +134,7 @@ class CategoryCreateView(CreateView):
 
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(user_is_admin, login_url='/'), name='dispatch')
 class PanelProductDetailView(View):
 
     def get(self, request, pk):
@@ -121,6 +160,7 @@ class PanelProductDetailView(View):
 
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(user_is_admin, login_url='/'), name='dispatch')
 class ProductCreateView(CreateView):
     model = Product
     form_class = ProductForm
@@ -129,6 +169,7 @@ class ProductCreateView(CreateView):
 
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(user_is_admin, login_url='/'), name='dispatch')
 class ProductDeleteView(View):
     def get(self, request, pk):
         Product.objects.get(id=pk).delete()
@@ -136,8 +177,26 @@ class ProductDeleteView(View):
 
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(user_is_admin, login_url='/'), name='dispatch')
 class CategoryDeleteView(View):
 
     def get(self, request, pk):
         Category.objects.get(id=pk).delete()
         return redirect(to='/panel/category/')
+
+
+@method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(user_is_admin, login_url='/'), name='dispatch')
+class PanelTable(DetailView):
+    model = TableModel
+    template_name = 'admin_p/AdminTableDetail.html'
+
+
+@method_decorator(login_required, name='dispatch')
+@method_decorator(user_passes_test(user_is_admin, login_url='/'), name='dispatch')
+class PanelTableDelete(DeleteView):
+    model = TableModel
+    template_name = 'admin_p/AdminTableDelete.html'
+    success_url = reverse_lazy('panel')
+
+

@@ -8,8 +8,7 @@ from product.serializers import ProductSerializers, ProductSerializerPost
 
 
 class ProductViewSet(ModelViewSet):
-    queryset = Product.objects.select_related('category').only('id', 'title', 'price', 'description', 'photo',
-                                                               'category', 'category__title')
+    queryset = Product.objects.all().select_related('category')
     serializer_class = ProductSerializers
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ['title', 'category']
@@ -21,3 +20,5 @@ class ProductViewSet(ModelViewSet):
         if self.request.method == 'POST':
             return ProductSerializerPost  # Используйте другой сериализатор для метода POST
         return self.serializer_class
+
+
