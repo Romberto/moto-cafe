@@ -4,7 +4,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from category.models import Category
 from category.serializers import CategorySerializers
-
+from product.models import Product
 
 
 class CategoryViewSet(ModelViewSet):
@@ -18,4 +18,5 @@ class CategoryView(ListView):
     все категории
     """
     model = Category
+
 

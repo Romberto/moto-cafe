@@ -24,12 +24,14 @@ from rest_framework.routers import SimpleRouter
 
 from product.views import ProductViewSet
 from category.views import CategoryViewSet
+from waiter.views import WaiterViewSet
 
 router = SimpleRouter()
 router.register(r'product', ProductViewSet, basename='product')
 router.register(r'category', CategoryViewSet, basename="category")
-urlpatterns = [
+router.register(r'waiter', WaiterViewSet, basename="waiter")
 
+urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('user_auth.urls')),
     path('api-my_auth/', include('rest_framework.urls')),
