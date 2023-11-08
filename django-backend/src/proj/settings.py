@@ -26,7 +26,7 @@ load_dotenv()
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 if DEBUG:
@@ -101,7 +101,7 @@ DATABASES = {
         'NAME': 'moto_base',
         'USER': 'moto_db_user',
         'PASSWORD': 'wer324cvG',
-        'HOST': 'localhost',
+        'HOST': 'postgresql-db',
         'PORT': '5432',
     }
 }
