@@ -56,9 +56,15 @@
 
                     <ul class="tables row align-items-start justify-content-around ps-0">
                         {% for table in tables %}
-                            <li class="col-3 mb-2 ms-2 me-2">
-                                <a href="{% url 'panel_table_detail' table.id  %}" class="tables__item p-2 btn btn-danger w-100 ps-0 pe-0">{{table.name}}</a>
-                            </li>
+                            {% if table.owner_officiant %}
+                                <li class="col-3 mb-2 ms-2 me-2">
+                                    <a href="{% url 'panel_table_detail' table.id  %}" class="tables__item p-2 btn btn-danger w-100 ps-0 pe-0">{{table.name}}</a>
+                                </li>
+                            {% else %}
+                                <li class="col-3 mb-2 ms-2 me-2">
+                                    <a href="{% url 'panel_table_detail' table.id  %}" class="tables__item p-2 btn btn-success w-100 ps-0 pe-0">{{table.name}}</a>
+                                </li>
+                            {% endif %}
                         {% endfor %}
                     </ul>
                 <p class="table__title text-center mb-2">Сколько столов добавить ?</p>

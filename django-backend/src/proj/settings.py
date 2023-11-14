@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'product',
     'admin_p',
     'user_auth',
+    'tables', # столы
     'waiter',  # официант
     'orders'  # счёт
 ]

@@ -10,14 +10,14 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, SAFE_METHODS
 from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet, ModelViewSet
 
-from admin_p.models import TableModel
+from tables.models import TableModel
 from orders.models import Orders, ItemOrders
 from waiter.permissions.permissions import IsAuthenticatedAndAdminOrReadOnly
 from waiter.serializers import WaiterSerializer, WaiterCreateSerializer
 
 
 def user_is_waiter(user):
-    return user.groups.filter(name='Waiters').exists()
+    return user.groups.filter(name='Waiter').exists()
 
 
 @method_decorator(login_required, name='dispatch')
