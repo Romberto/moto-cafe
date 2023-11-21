@@ -3,20 +3,43 @@
 {% block body %}
 {% load static%}
 <style>
+    .plus_button{
+        height: 30px;
+        width: 30px;
+        background: url({% static 'tables/img/plus.svg' %});
+        background-size: cover; /* Растягивает изображение на весь экран и сохраняет пропорции */
+        background-position: center center; /* Выравнивание изображения по центру */
+        background-repeat: no-repeat;
+    }
+
+    .minus_button{
+        height: 30px;
+        width: 30px;
+        background: url({% static 'tables/img/minus.svg' %});
+        background-size: cover; /* Растягивает изображение на весь экран и сохраняет пропорции */
+        background-position: center center; /* Выравнивание изображения по центру */
+        background-repeat: no-repeat;
+    }
+
+    .menu-list li p {
+        min-height: 30px;
+    }
 
 </style>
-<div class="container">
+
+<div class="container waiter position-relative">
+
     <header class="d-flex justify-content-between p-2 mb-2">
-        <h1 class="number-table">Стол №{{result.table.name}}</h1>
-        {% if not result.table.owner_officiant %}
-            <a href="{% url 'panel_table_detail' result.table.name  %}" class="btn btn-danger me-1" id="open-check">открыть счёт</a>
+        <h1 class="number-table" data-tablename="{{data.table.name}}">Стол №{{data.table.name}}</h1>
+        {% if not data.table.owner_officiant %}
+        <a href="#" class="btn btn-danger me-1" id="open-check" data-table={{data.table.name}}>открыть счёт</a>
         {% else %}
-            <button class="js_add_product btn btn-warning mb-2 mx-auto d-block">добавить</button>
+        <button class="btn btn-warning mb-2 mx-auto d-block" id="js_add_product">добавить</button>
         {% endif %}
         <a href="{% url 'panel' %}" class="btn btn-success">назад</a>
     </header>
     <main>
-
+        {% if orders.itemOrders %}
         <section>
             <ul class="ps-0 header-check row">
                 <li class="col-6 ps-1 pe-1">название блюда</li>
@@ -36,20 +59,35 @@
                 </li>
                 {% endfor %}
             </ul>
+            {% endif %}
             <div class="check-full-price border-top border-success pt-2">
-                <p>Полная стоимость: <span class="text-danger">{{result.full_price}}</span> &#x20bd</p>
+                <p>Полная стоимость: <span class="text-danger" id='full_price'>{{orders.full_price}}</span> &#x20bd</p>
             </div>
         </section>
-        <section>
-            <div class="add_product-block" id="block-menu">
+        <section class="menu">
+            <div class="menu_waiter">
+                <div class="menu_waiter__wrapper position-relative w-100">
+                    <div class="block_menu_close">
+                        <button type="button" id="close_menu" class="btn-close float-end w-100"></button>
+                    </div>
+                    <div class="menu_category row">
+                        <ul class="menu_category-list col-6 ps-4 pt-4">
 
+                        </ul>
+                        <div class="col-6 text-center pt-4">
+                            <p class="full_price"><span></span> &#x20bd</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
-
-
     </main>
 
-<script type="text/javascript" src="{% static 'tables/js/get_menu_product.js'%}"></script>
+    <script type="text/javascript" src="{% static 'tables/js/open_check.js'%}"></script>
+    <script type="text/javascript" src="{% static 'tables/js/waiter_menu.js'%}"></script>
+<script>
+    var csrf_token = "{{ csrf_token }}";
+</script>
 </div>
 {% endblock %}
 

@@ -24,13 +24,11 @@ from django.http import HttpResponse
 @method_decorator(login_required, name='dispatch')
 class PanelView(View):
     def get(self, request):
+        tables = TableModel.objects.all().order_by('name').select_related('owner_officiant')
+        data = {'tables': tables}
         if request.user.groups.filter(name='Admins').exists():
-            tables = TableModel.objects.all().order_by('name')
-            data = {'tables': tables}
             return render(request, 'admin_p/AdminPanel.html', data)
         elif request.user.groups.filter(name='Waiter').exists():
-            tables = TableModel.objects.all().order_by('name')
-            data = {'tables': tables}
             return render(request, 'waiter/WaiterPanel.html', data)
         else:
             return render(request, 'admin_p/AdminNotPermissions.html')
