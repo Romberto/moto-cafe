@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 
-from admin_p.models import TableModel
+from tables.models import TableModel
 from product.models import Product
 
 
@@ -26,9 +26,9 @@ class Orders(models.Model):
 class ItemOrders(models.Model):
     order_id = models.ForeignKey(Orders, on_delete=models.PROTECT)
     product_id = models.ForeignKey(Product, on_delete=models.PROTECT)
-    count = models.IntegerField()
+    count = models.PositiveIntegerField()
 
     def __str__(self):
-        return f'item_order-{self.id}, prod - {self.product_id.name}'
+        return f'item_order-{self.id}, prod - {self.product_id}'
 
 

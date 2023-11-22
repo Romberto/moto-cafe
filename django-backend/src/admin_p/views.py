@@ -11,7 +11,7 @@ from django.views.generic import ListView, DetailView, CreateView, DeleteView
 from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import user_passes_test
 from admin_p.decorators import custom_login_required
-from admin_p.models import TableModel
+from tables.models import TableModel
 from category.forms import CategoryForm
 from category.models import Category
 from product.forms import ProductForm
@@ -24,10 +24,12 @@ from django.http import HttpResponse
 @method_decorator(login_required, name='dispatch')
 class PanelView(View):
     def get(self, request):
+        tables = TableModel.objects.all().order_by('name').select_related('owner_officiant')
+        data = {'tables': tables}
         if request.user.groups.filter(name='Admins').exists():
-            tables = TableModel.objects.all()
-            data = {'tables': tables}
             return render(request, 'admin_p/AdminPanel.html', data)
+        elif request.user.groups.filter(name='Waiter').exists():
+            return render(request, 'waiter/WaiterPanel.html', data)
         else:
             return render(request, 'admin_p/AdminNotPermissions.html')
 
@@ -54,6 +56,8 @@ class PanelView(View):
 
 def user_is_admin(user):
     return user.groups.filter(name='Admins').exists()
+
+
 
 
 @method_decorator(login_required, name='dispatch')
@@ -183,20 +187,5 @@ class CategoryDeleteView(View):
     def get(self, request, pk):
         Category.objects.get(id=pk).delete()
         return redirect(to='/panel/category/')
-
-
-@method_decorator(login_required, name='dispatch')
-@method_decorator(user_passes_test(user_is_admin, login_url='/'), name='dispatch')
-class PanelTable(DetailView):
-    model = TableModel
-    template_name = 'admin_p/AdminTableDetail.html'
-
-
-@method_decorator(login_required, name='dispatch')
-@method_decorator(user_passes_test(user_is_admin, login_url='/'), name='dispatch')
-class PanelTableDelete(DeleteView):
-    model = TableModel
-    template_name = 'admin_p/AdminTableDelete.html'
-    success_url = reverse_lazy('panel')
 
 

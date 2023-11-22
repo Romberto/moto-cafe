@@ -1,0 +1,19 @@
+.menu_waiter{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100vh;
+    background: aquamarine;
+    clip:rect(0,0,0,0);
+    transition: clip 1s ease;
+}
+
+.show{
+    clip: rect(0,auto,auto, 0);
+}
+.block_menu_close{
+    position: absolute;
+    top: 5px;
+    right: 15px;
+}

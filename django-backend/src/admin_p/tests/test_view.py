@@ -3,8 +3,8 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test.testcases import TestCase
 from django.urls import reverse
 
-from admin_p.models import TableModel
-from admin_p.views import PanelTableDelete
+from tables.models import TableModel
+from tables.views import PanelTableDelete
 from category.models import Category
 from product.models import Product
 
@@ -30,7 +30,7 @@ class TestAdminPanelTable(TestCase):
         self.assertTrue(self.client.login(username="testuser1", password='1234erSDD'))
         response = self.client.get(url)
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'admin_p/AdminTableDetail.html')
+        self.assertTemplateUsed(response, 'tables/TableDetail.html')
         self.assertEquals(response.context['object'].name, self.table_1.name)
 
     def test_panel_table_delete_no_login(self):
@@ -43,7 +43,7 @@ class TestAdminPanelTable(TestCase):
         self.assertTrue(self.client.login(username="testuser1", password='1234erSDD'))
         response = self.client.get(url)
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'admin_p/AdminTableDelete.html')
+        self.assertTemplateUsed(response, 'tables/TableDelete.html')
 
 
 class TestAdminPanel(TestCase):

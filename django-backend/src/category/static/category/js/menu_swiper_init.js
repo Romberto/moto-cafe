@@ -1,16 +1,5 @@
 window.addEventListener('load', function(){
 
-//                var swiper = new Swiper(".mySwiper", {
-//                      direction: "vertical",
-//                    speed: 1200,
-//                    loop: true,
-//                    spaceBetween: 10,
-//                    pagination: {
-//                        el: ".swiper-pagination",
-//                        clickable: true,
-//                    },
-//                    autoHeight: true, // Включение автоматической высоты
-//                    })
 
 // ajax запрос для отображения всех product определёной
 // категории при расктытие аккордиона на главной странице,
@@ -25,7 +14,6 @@ $('.accordion-header').on('click', function(e){
         success: function(response){
 
             if (response.length > 0) {
-                console.log(response)
               category_block.empty();
                 $.each(response, function(index, item) {
                     item_block = `

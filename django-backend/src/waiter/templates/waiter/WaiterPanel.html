@@ -1,10 +1,53 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'waiter/base.html' %}
+{% load static %}
+{% block title%}Официант{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="d-flex justify-content-around align-items-center">
+        <h2 class=" text-center">Панель официанта</h2>
+         <p class="text-info">{{ request.user.last_name }}</p>
+        <a href="{% url 'logout' %}" class="btn float-end">выход</a>
+    </div>
+    <div class="line w-100 mb-3"></div>
+    <section class="table">
+        <div class="table__block">
 
-</body>
-</html>
+            {% if tables %}
+
+            <h1 class="text-center mb-3">
+                Столы
+            </h1>
+
+            <ul class="tables row align-items-start justify-content-around ps-0">
+
+                {% for table in tables %}
+                    {% if table.owner_officiant %}
+
+                       {% if table.owner_officiant == request.user %}
+                <li class="col-3 mb-2 ms-2 me-2">
+                    <a href="{% url 'panel_table_detail' table.id  %}"
+                       class="tables__item p-2 btn btn-danger w-100 ps-0 pe-0">{{table.name}}</a>
+                </li>
+                        {% else %}
+                <li class="col-3 mb-2 ms-2 me-2">
+                    <button
+                       class="tables__item p-2 btn btn-warning js-owner w-100 ps-0 pe-0">{{table.name}}</button>
+                </li>
+                        {% endif %}
+                    {% else %}
+                <li class="col-3 mb-2 ms-2 me-2">
+                    <a href="{% url 'panel_table_detail' table.id  %}"
+                       class="tables__item p-2 btn btn-success w-100 ps-0 pe-0">{{table.name}}</a>
+                </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+
+            {% else %}
+            <p class="text-center mb-2">Столов нет! Их может создать администратор</p>
+            {% endif %}
+        </div>
+    </section>
+</div>
+
+{% endblock %}

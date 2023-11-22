@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from admin_p.models import TableModel
+from tables.models import TableModel
 
 
 @admin.register(TableModel)
