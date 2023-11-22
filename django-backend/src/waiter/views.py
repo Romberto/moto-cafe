@@ -85,11 +85,9 @@ class WaiterViewSet(ModelViewSet):
     def delete(self, request, *args, **kwargs):
         group_name = 'Waiter'  # Замените на имя группы, которую вы хотите удалить
         try:
-            print('98' * 20)
             group = Group.objects.get(name=group_name)
             users_to_delete = User.objects.filter(groups=group)
             users_to_delete.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Group.DoesNotExist:
-            print('/*' * 30)
             return Response(status=status.HTTP_404_NOT_FOUND)

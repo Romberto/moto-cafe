@@ -124,6 +124,7 @@ window.addEventListener('load', function(){
                 success: function (data){
                     localStorage.clear()
                     location.reload()
+
                 },
                 error: function () {
                 alert('Произошла ошибка при создании таблицы.');
