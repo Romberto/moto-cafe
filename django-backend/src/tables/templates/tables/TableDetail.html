@@ -64,6 +64,18 @@
                 <p>Полная стоимость: <span class="text-danger" id='full_price'>{{orders.full_price}}</span> &#x20bd</p>
             </div>
         </section>
+        <section class="pred_check d-none">
+            <h3 class="text-center mb-2">Добавленный заказ</h3>
+            <ul class="ps-0 header-check row">
+                <li class="col-6 ps-1 pe-1">название блюда</li>
+                <li class="col-2 ps-1 pe-1">стоим.</li>
+                <li class="col-2 ps-1 pe-1">кол-во</li>
+                <li class="col-2 ps-1 pe-1">сумма</li>
+            </ul>
+            <ul class="pred_check__body border border-success rounded ps-0 mb-1">
+
+            </ul>
+        </section>
         <section class="menu">
             <div class="menu_waiter">
                 <div class="menu_waiter__wrapper position-relative w-100">
@@ -85,6 +97,7 @@
 
     <script type="text/javascript" src="{% static 'tables/js/open_check.js'%}"></script>
     <script type="text/javascript" src="{% static 'tables/js/waiter_menu.js'%}"></script>
+    <script type="text/javascript" src="{% static 'tables/js/pred_check.js'%}"></script>
 <script>
     var csrf_token = "{{ csrf_token }}";
 </script>
