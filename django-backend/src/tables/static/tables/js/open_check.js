@@ -3,7 +3,6 @@ window.addEventListener('load', function(){
         e.preventDefault();
 
         let number = $('#open-check').data('table');
-        console.log(number)
             $.ajax({
             type: 'POST',
             url: '/tables/create_table/',

@@ -55,12 +55,12 @@ window.addEventListener('load', function(){
                 category_page += '<h3 class="mb-2">'+categoryName+'</h3>'
                 category_page += '<div class="menu-block">'
                 category_page += '<ul class="menu-list ps-1">'
-                category_page += '<button class="btn btn-info mb-3">Добавить к счёту</button>'
+                category_page += '<button class="btn btn-info mb-3" id="add_pred_check">Добавить к счёту</button>'
 
                 $.each(response, function(index, product){
                     category_page += '<li class="row mb-2">'
                         category_page += '<p class="col-7 mb-1 product_name">'+product.title+'</p>'
-                        category_page += '<a href="#" type="button" class="plus_button col-2" data-product="'+product.id+'"></a>'
+                        category_page += '<a href="#" type="button" class="plus_button col-2" data-product="'+product.id+'" data-price="'+product.price+'"></a>'
                         check_product = false
                         if(parseTables){
                             check_product = is_exist_in_localStorage(product.id, parseTables[tableNumber])
@@ -95,7 +95,8 @@ window.addEventListener('load', function(){
             const tableNumber = $('#category-table').data('table')
             const product_id = $(this).data('product')
             const product_name = $(this).prev().text()
-            let result = plus_in_localStorage(count ,product_id, tableNumber, product_name)
+            const price = $(this).data('price')
+            let result = plus_in_localStorage(count ,product_id, tableNumber, product_name, price)
             $(this).next().text(result)
             }else{
                 e.preventDefault()
@@ -105,7 +106,7 @@ window.addEventListener('load', function(){
 
 
     //  функция прибавления элемента в localStorage
-    function plus_in_localStorage(count ,product_id, tableNumber, product_name){
+    function plus_in_localStorage(count ,product_id, tableNumber, product_name, price){
         let tables = localStorage.getItem('tables')
         let parsedTable = JSON.parse(tables)
         if(parsedTable){ // если в локал сторадж есть записи
@@ -121,18 +122,18 @@ window.addEventListener('load', function(){
                         }
                 }
                 if(!is_Exist){// если в списке продуктов нет продукта с таким id
-                    parsedTable[tableNumber].push({'product_id': product_id, count: 1, 'product_name':product_name})
+                    parsedTable[tableNumber].push({'product_id': product_id, count: 1, 'product_name':product_name, 'price':price})
                     localStorage.setItem('tables', JSON.stringify(parsedTable));
                     return 1
                 }
             }else{
                 // если в localStorage ещё нет стола стаким именем то мы создаём его
-                table = {[String(tableNumber)] :[{'product_id': product_id, count: 1, 'product_name':product_name}]}
+                table = {[String(tableNumber)] :[{'product_id': product_id, count: 1, 'product_name':product_name, 'price':price}]}
                 localStorage.setItem('tables', JSON.stringify(table));
                 return 1
             }
         }else{
-                table = {[String(tableNumber)]:[{'product_id': product_id, count: 1, 'product_name':product_name}]}
+                table = {[String(tableNumber)]:[{'product_id': product_id, count: 1, 'product_name':product_name, 'price':price}]}
                 localStorage.setItem('tables', JSON.stringify(table));
                 return 1
         }
@@ -174,7 +175,6 @@ window.addEventListener('load', function(){
                     if(parsedTable[tableNumber][i].product_id === product_id){
                         parsedTable[tableNumber][i].count -= 1
                         if(parsedTable[tableNumber][i].count === 0){
-                            console.log(parsedTable[tableNumber][i])
                             parsedTable[tableNumber].splice(i, 1)
                             localStorage.setItem('tables', JSON.stringify(parsedTable));
                             return 0
@@ -189,11 +189,17 @@ window.addEventListener('load', function(){
             return 0
         }
     };
+    function add_to_check(){
+        $(document).on('click', '#add_pred_check', function(){
+            location.reload();
+        });
+    };
 
 
     menu()
     clickPlus()
     clickMinus()
+    add_to_check()
 });
 
 

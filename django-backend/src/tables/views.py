@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.auth.models import User
 from django.db.models import F, Sum
@@ -62,6 +64,7 @@ class PanelTableDelete(DeleteView):
     template_name = 'tables/TableDelete.html'
 
 
+@method_decorator(login_required, name='dispatch')
 def form_menu_products():
     products = Product.objects.all().select_related('category').only('id', 'title', 'price', 'category__title')
     result = {}
@@ -87,6 +90,7 @@ def build_menu_product():
 
 
 # открытие счёта
+@method_decorator(login_required, name='dispatch')
 def create_table(request):
     if request.method == 'POST':
         number = request.POST.get('number')
@@ -96,16 +100,40 @@ def create_table(request):
             table.save()
             order = Orders.objects.create(table_id=table)
             data = {
-
                 'table': 'ok',
             }
         except TableModel.DoesNotExist:
             data = {
-
                 'error': 'not model',
             }
-
         return JsonResponse(data)
     else:
         # Обработка случаев, когда запрос не AJAX или не POST
         pass
+
+
+def add_order(request):
+    if request.method == 'POST':
+        table_name = request.POST.get('table_name')
+        data_list = request.POST.get('data_list')
+        order = Orders.objects.get(table_id__name=table_name)
+        data_python_list = json.loads(data_list)
+        objects_list = []
+        for item in data_python_list:
+            product = Product.objects.get(id=item['product_id'])
+            order_element = ItemOrders.objects.filter(product_id=product, order_id=order).select_related('product_id',
+                                                                                                         'order_id')
+            if not order_element:
+                objects_list.append(
+                    ItemOrders(order_id=order, product_id=product, count=item['count'])
+                )
+            else:
+                order_element[0].count += item['count']
+                order_element[0].save()
+        ItemOrders.objects.bulk_create(
+            objects_list
+        )
+        data = {
+            'success': True
+        }
+        return JsonResponse(data)

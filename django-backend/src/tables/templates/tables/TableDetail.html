@@ -3,6 +3,7 @@
 {% block body %}
 {% load static%}
 <style>
+    .button_plus_pred_check,
     .plus_button{
         height: 30px;
         width: 30px;
@@ -12,6 +13,7 @@
         background-repeat: no-repeat;
     }
 
+    .button_minus_pred_check,
     .minus_button{
         height: 30px;
         width: 30px;
@@ -40,6 +42,7 @@
     </header>
     <main>
         {% if orders.itemOrders %}
+
         <section>
             <ul class="ps-0 header-check row">
                 <li class="col-6 ps-1 pe-1">название блюда</li>
@@ -48,10 +51,11 @@
                 <li class="col-2 ps-1 pe-1">сумма</li>
             </ul>
             <ul class="check border border-success rounded ps-0 mb-1">
-                {% for item in result.itemOrders %}
+
+                {% for item in orders.itemOrders %}
                 <li class="check__item">
                     <ul class="item_row row ps-0">
-                        <li class="col-6 mb-2 ps-3 pe-1">{{item.product_title}}</li>
+                        <li class="col-6 mb-2 ps-3 pe-1 text-success">{{item.product_title}}</li>
                         <li class="col-2 mb-2 ps-1 pe-1">{{item.product_price}} &#x20bd</li>
                         <li class="col-1 mb-2 ps-1 pe-1">{{item.count}}</li>
                         <li class="col-3 mb-2 ps-1 pe-1">{{item.total_price}} &#x20bd</li>
@@ -68,13 +72,14 @@
             <h3 class="text-center mb-2">Добавленный заказ</h3>
             <ul class="ps-0 header-check row">
                 <li class="col-6 ps-1 pe-1">название блюда</li>
-                <li class="col-2 ps-1 pe-1">стоим.</li>
+                <li class="col-2 ps-1 pe-1"></li>
                 <li class="col-2 ps-1 pe-1">кол-во</li>
-                <li class="col-2 ps-1 pe-1">сумма</li>
+                <li class="col-2 ps-1 pe-1"></li>
             </ul>
-            <ul class="pred_check__body border border-success rounded ps-0 mb-1">
+            <ul class="pred_check__body border border-success rounded ps-0 mb-2">
 
             </ul>
+            <button type="button" id="order_go" class="btn btn-success d-block w-100">заказ</button>
         </section>
         <section class="menu">
             <div class="menu_waiter">
