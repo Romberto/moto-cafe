@@ -44,34 +44,33 @@ window.addEventListener('load', function(){
         let categoryId = $(this).data('category')
         let categoryName = $(this).text()
         let tableNumber = $('#table-menu').data('table')
-        orders = localStorage.getItem('orders')
-        parseOrders = JSON.parse(orders)
+        tables = localStorage.getItem('tables')
+        parseTables = JSON.parse(tables)
         $.ajax({
             url:'/api/v1/product/?category='+ categoryId,
             method: 'get',
             dataType: 'json',
             success: function(response){
-                category_page = '<h1 data-table="tableNumber" id="category-table">Стол №'+tableNumber+'</h1>'
+                category_page = '<h1 data-table="'+tableNumber+'" id="category-table">Стол №'+tableNumber+'</h1>'
                 category_page += '<h3 class="mb-2">'+categoryName+'</h3>'
                 category_page += '<div class="menu-block">'
                 category_page += '<ul class="menu-list ps-1">'
-                category_page += '<button class="btn btn-info mb-3">Добавить к счёту</button>'
+                category_page += '<button class="btn btn-info mb-3" id="add_pred_check">Добавить к счёту</button>'
 
                 $.each(response, function(index, product){
                     category_page += '<li class="row mb-2">'
-                        category_page += '<p class="col-7 mb-1">'+product.title+'</p>'
-                        category_page += '<a href="#" type="button" class="plus_button col-2" data-product="'+product.id+'"></a>'
-
-                        check_product = is_exist_in_localStorage(product.id, parseOrders)
-
+                        category_page += '<p class="col-7 mb-1 product_name">'+product.title+'</p>'
+                        category_page += '<a href="#" type="button" class="plus_button col-2" data-product="'+product.id+'" data-price="'+product.price+'"></a>'
+                        check_product = false
+                        if(parseTables){
+                            check_product = is_exist_in_localStorage(product.id, parseTables[tableNumber])
+                        }
                         if(check_product){
                             category_page += '<p class="col-1 mb-1 count">'+check_product+'</p>'
                         }else{
                             category_page += '<p class="col-1 mb-1 count">0</p>'
                         }
                         category_page += '<a href="#" type="button" class="minus_button col-2" data-product="'+product.id+'"></a>'
-
-
                     category_page += '</li>'
                 })
                 category_page += '</ul>'
@@ -95,44 +94,50 @@ window.addEventListener('load', function(){
             if(parseInt(count) <= 8){
             const tableNumber = $('#category-table').data('table')
             const product_id = $(this).data('product')
-            let result = plus_in_localStorage(count ,product_id, tableNumber)
+            const product_name = $(this).prev().text()
+            const price = $(this).data('price')
+            let result = plus_in_localStorage(count ,product_id, tableNumber, product_name, price)
             $(this).next().text(result)
             }else{
                 e.preventDefault()
             }
         })
     }
+
+
     //  функция прибавления элемента в localStorage
-    function plus_in_localStorage(count ,product_id, table){
-        let items = localStorage.getItem('orders')
-        let parsedItems = JSON.parse(items)
-        if(parsedItems){
-            let is_Exist = true
-            for (var i = 0; i < parsedItems.length; i++) {
-              if (parsedItems[i].product_id === product_id) {
-                parsedItems[i].count += 1;
-                localStorage.setItem('orders', JSON.stringify(parsedItems));
-                return parsedItems[i].count;
+    function plus_in_localStorage(count ,product_id, tableNumber, product_name, price){
+        let tables = localStorage.getItem('tables')
+        let parsedTable = JSON.parse(tables)
+        if(parsedTable){ // если в локал сторадж есть записи
+            if (parsedTable.hasOwnProperty(tableNumber)){ // если есть запись этого стола
                 is_Exist = false
-                break
-              }
-            }
-            if(is_Exist){
-                item = {'product_id': product_id, 'count': 1}
-                parsedItems.push(item)
-                localStorage.setItem('orders', JSON.stringify(parsedItems));
-                return 1; // Если словарь найден, выходим из цикла
+                for(let i = 0; i < parsedTable[tableNumber].length; i++){ // проходим по списку заказанных продуктов
+
+                    if(parsedTable[tableNumber][i].product_id === product_id){  // если в списке продуктов есть продукт с таким id
+                        parsedTable[tableNumber][i].count += 1
+                        localStorage.setItem('tables', JSON.stringify(parsedTable));
+                        is_Exist = true
+                        return parsedTable[tableNumber][i].count
+                        }
+                }
+                if(!is_Exist){// если в списке продуктов нет продукта с таким id
+                    parsedTable[tableNumber].push({'product_id': product_id, count: 1, 'product_name':product_name, 'price':price})
+                    localStorage.setItem('tables', JSON.stringify(parsedTable));
+                    return 1
+                }
+            }else{
+                // если в localStorage ещё нет стола стаким именем то мы создаём его
+                table = {[String(tableNumber)] :[{'product_id': product_id, count: 1, 'product_name':product_name, 'price':price}]}
+                localStorage.setItem('tables', JSON.stringify(table));
+                return 1
             }
         }else{
-            orders = []
-
-            items = {'product_id': product_id, 'count': 1}
-            orders.push(items)
-            localStorage.setItem('orders', JSON.stringify(orders));
-            return 1
+                table = {[String(tableNumber)]:[{'product_id': product_id, count: 1, 'product_name':product_name, 'price':price}]}
+                localStorage.setItem('tables', JSON.stringify(table));
+                return 1
         }
-
-    };
+};
 
     // проверка на существование элемента с таким id в localStorage
     function is_exist_in_localStorage(id_product, data){
@@ -152,35 +157,49 @@ window.addEventListener('load', function(){
             e.preventDefault()
             let count = parseInt($(this).prev().text())
             if(count >= 1){
+                const tableNumber = $('#category-table').data('table')
                 const product_id = $(this).data('product')
-                result = minus_in_localStorage(count ,product_id)
+                result = minus_in_localStorage(count ,product_id, tableNumber)
                 $(this).prev().text(result)
             }
 
         })
     };
     //  функция прибавления элемента в localStorage
-    function minus_in_localStorage(count, product_id){
-        let items = localStorage.getItem('orders')
-        let parsedItems = JSON.parse(items)
-        if(parsedItems){
-            for (var i = 0; i < parsedItems.length; i++) {
-                if(parsedItems[i].product_id === product_id){
-                    parsedItems[i].count -= 1
-                    localStorage.setItem('orders', JSON.stringify(parsedItems));
-                    return parsedItems[i].count;
+    function minus_in_localStorage(count, product_id, tableNumber){
+        let table = localStorage.getItem('tables')
+        let parsedTable = JSON.parse(table)
+        if(parsedTable){
+            if (parsedTable.hasOwnProperty(tableNumber)){
+                for (var i = 0; i < parsedTable[tableNumber].length; i++) {
+                    if(parsedTable[tableNumber][i].product_id === product_id){
+                        parsedTable[tableNumber][i].count -= 1
+                        if(parsedTable[tableNumber][i].count === 0){
+                            parsedTable[tableNumber].splice(i, 1)
+                            localStorage.setItem('tables', JSON.stringify(parsedTable));
+                            return 0
+                        }
+                        localStorage.setItem('tables', JSON.stringify(parsedTable));
+                        return parsedTable[tableNumber][i].count
+                        break
+                    }
                 }
             }
         }else{
-            console.log('error minus')
+            return 0
         }
     };
-
+    function add_to_check(){
+        $(document).on('click', '#add_pred_check', function(){
+            location.reload();
+        });
+    };
 
 
     menu()
     clickPlus()
     clickMinus()
+    add_to_check()
 });
 
 
