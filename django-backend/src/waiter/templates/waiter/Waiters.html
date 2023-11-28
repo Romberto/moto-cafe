@@ -1,0 +1,44 @@
+{% extends 'waiter/base.html' %}
+{% load static %}
+{% block title%}официанты{% endblock%}
+{% block body%}
+<div class="container">
+    <header class="header text-center mb-2 pt-2">
+            <header class="pt-3 position-relative">
+        <div class="d-flex justify-content-around">
+            <h2 class="text-center mb-5">Официанты</h2>
+            <a href="{% url 'panel' %}" class="position-absolute top-1 end-0 btn btn-outline-success">назад</a>
+        </div>
+        <hr class="bg-dark">
+
+    </header>
+    </header>
+    <main>
+        <div class="waiters">
+            <ul class="waiters__list w-75 ps-0">
+                {% for waiter in waiters %}
+
+                <ll class="waiters__item">
+                    <a href="{% url 'edit_waiters' waiter.id %}" class="mb-2 d-flex waiters__link waiter btn btn-outline-success justify-content-between align-items-center">
+                        <p class="waiter__id me-1">{{waiter.id}}:</p>
+                        <p class="waiter__username me-1">{{waiter.username}}</p>
+                        <div class="d-block">
+                            {% if waiter.first_name %}
+                            <span class="waiter__first_name me-1 text-capitalize">{{waiter.first_name}}</span>
+                            {% endif %}
+                            {% if waiter.last_name %}
+                            <span class="waiter__last_name text-capitalize">{{waiter.last_name}}</span>
+                            {% endif %}
+                        </div>
+
+                    </a>
+                </ll>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </main>
+
+</div>
+
+{% endblock%}

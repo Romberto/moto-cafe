@@ -1,9 +1,15 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group, Permission
 from django.contrib.contenttypes.models import ContentType
-from django.shortcuts import render
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import ProtectedError
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
+from django.views.generic import ListView, DetailView, DeleteView
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, SAFE_METHODS
@@ -12,15 +18,13 @@ from rest_framework.viewsets import ViewSet, ModelViewSet
 
 from tables.models import TableModel
 from orders.models import Orders, ItemOrders
+from waiter.forms import WaiterForm
 from waiter.permissions.permissions import IsAuthenticatedAndAdminOrReadOnly
 from waiter.serializers import WaiterSerializer, WaiterCreateSerializer
 
 
 def user_is_waiter(user):
     return user.groups.filter(name='Waiter').exists()
-
-
-
 
 
 class WaiterViewSet(ModelViewSet):
@@ -91,3 +95,74 @@ class WaiterViewSet(ModelViewSet):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Group.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class WaitersView(ListView):
+    model = User
+    template_name = 'waiter/Waiters.html'
+    context_object_name = 'waiters'
+
+    def get_queryset(self):
+        target_groups = ['Waiter']
+        queryset = User.objects.filter(groups__name__in=target_groups)
+        return queryset
+
+
+class EditWaiterView(View):
+    def get(self, request, pk):
+        try:
+            waiter = User.objects.get(id=pk)
+            form = WaiterForm(instance=waiter)
+            data = {
+                'form': form,
+                'waiter': waiter
+            }
+            return render(request, 'waiter/WaiterEdit.html', data)
+        except ObjectDoesNotExist:
+            return render(request, 'waiter/WaiterEdit.html')
+
+    def post(self, request, pk):
+        form = WaiterForm(request.POST)
+        waiter = User.objects.get(id=pk)
+        if form.is_valid():
+            waiter.first_name = form.cleaned_data['first_name']
+            waiter.last_name = form.cleaned_data['last_name']
+            waiter.save()
+            return redirect(reverse_lazy('all_waiters'))
+        else:
+            data = {
+                'form': form,
+                'waiter': waiter
+            }
+            return render(request, 'waiter/WaiterEdit.html', data)
+
+
+class DeleteWaiterView(DeleteView):
+    model = User
+    template_name = 'waiter/WaiterDelete.html'
+    success_url = reverse_lazy('panel')
+
+    def post(self, request, *args, **kwargs):
+        try:
+            return super().delete(request, *args, **kwargs)
+        except ProtectedError as e:
+            return self.render_to_response({'error': str(e)})
+
+
+class CreateWaiter(View):
+    def get(self, request):
+        form = UserCreationForm()
+        return render(request, 'waiter/WaiterCreate.html', {'form': form})
+
+    def post(self, request):
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            group = Group.objects.get(name='Waiter')
+            user.groups.add(group)
+            return redirect(reverse_lazy('all_waiters'))
+        else:
+            variables = {
+                'form': form
+            }
+            return render(request, 'waiter/WaiterCreate.html', variables)

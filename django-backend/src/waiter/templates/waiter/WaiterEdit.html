@@ -1,0 +1,42 @@
+{% extends 'waiter/base.html' %}
+{% load static %}
+{% block title%}официанты{% endblock%}
+{% block body%}
+<div class="container">
+    <header>
+        <h2 class="text-center pt-3 mb-2">Учётные данные официанта {{waiter.username}}</h2>
+    </header>
+    <main>
+        <div class="row">
+            <form method="POST" class="mb-3 col-9">
+                {% csrf_token %}
+                {% for field in form %}
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                <br>
+                {% endfor %}
+                <input class="btn btn-success" type="submit" value="изменить данные"/>
+                <div style="color: red;">
+                    {% for field, error in form.errors.items %}
+                    {{ field }}: {{ error }}
+                    {% endfor %}
+                </div>
+            </form>
+            <div class="col-3">
+                <a href="{% url 'all_waiters' %}" class="btn btn-success">назад</a>
+            </div>
+        </div>
+
+        <p>
+            <a href="{% url 'resetpassword' waiter.id %}" class="mb-2 btn btn-info mb-2" type="button"
+               data-waiter="{{waiter.id}}">Сброс пароля</a>
+        </p>
+        <p>
+            <a href="{% url 'delete_waiter' waiter.id %}" class="mb-2 btn btn-danger" type="button">Удалить</a>
+        </p>
+    </main>
+
+</div>
+
+
+{% endblock%}

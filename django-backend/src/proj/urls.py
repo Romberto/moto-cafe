@@ -38,9 +38,11 @@ urlpatterns = [
     path('api/v1/', include(router.urls)),
     path('', include('category.urls')),
     path('panel/', include('admin_p.urls')),
-    path('tables/', include('tables.urls'))
+    path('tables/', include('tables.urls')),
+    path('waiters/', include('waiter.urls')),
 
 ]
+
 if settings.DEBUG:
     import debug_toolbar
 
