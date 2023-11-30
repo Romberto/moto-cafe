@@ -1,0 +1,24 @@
+{% extends 'waiter/base.html' %}
+{% load static %}
+{% block title%}официанты{% endblock%}
+{% block body%}
+<div class="container">
+    <h3 class="text-center">Новый пользователь</h3>
+    <form method="post" class="w-75 mx-auto pt-4 border border-success rounded p-2">
+        {% csrf_token %}
+        {% for field in form %}
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        <p>{{ field }}</p>
+
+        {% endfor %}
+        {% if form.errors %}
+            {{form.errors}}
+        {% endif%}
+        <br>
+
+        <input type="submit" class="btn btn-success" value="Создать">
+    </form>
+</div>
+
+
+{% endblock%}

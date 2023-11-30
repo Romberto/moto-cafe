@@ -1,0 +1,22 @@
+{% extends 'waiter/base.html' %}
+{% load static %}
+{% block title%}Удалить официанта{% endblock%}
+{% block body%}
+<div class="container">
+    <div class="wrapper">
+        <a href="{% url 'edit_waiters' object.id %}" class="back_button btn btn-success">назад</a>
+        <div class="inner">
+            <h3 class="text-center text-bg-danger">Удаление официанта</h3>
+                <form action="" method="post">{% csrf_token %}
+                    <p class="p-2">Вы действительно хотите удалить официанта "{{ object.username }}"?</p>
+                    {% if error %}
+                    <p class="text-danger p-2">"Не удается удалить объект из-за наличия связанных данных. У официанта есть не закрытые столы."</p>
+                    {% endif %}
+                    <input class="btn btn-danger mb-2 ms-2" type="submit" value="Удалить"/>
+                </form>
+        </div>
+    </div>
+
+</div>
+
+{% endblock%}

@@ -4,11 +4,12 @@ from django import forms
 from product.models import Product
 from django.core.exceptions import ValidationError
 
-def photo_valid(value):
 
+def photo_valid(value):
     ext = value.name.split('.')[-1].lower()
     if ext not in ['png', 'jpg', 'jpeg']:
         raise ValidationError("расширение файла может быть 'png', 'jpg', 'jpeg'")
+
 
 class ProductForm(forms.ModelForm):
     class Meta:
@@ -37,5 +38,3 @@ class ProductForm(forms.ModelForm):
         self.fields['category'].widget.attrs['class'] = 'form-select mb-2 w-50'
 
     photo = forms.ImageField(validators=[photo_valid])
-
-

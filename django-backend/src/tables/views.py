@@ -46,7 +46,6 @@ class PanelTable(View):
         if table.owner_officiant == request.user:  # является ли user официантом этого стола
             orders = get_orders_id(pk)
 
-
             return render(request, 'tables/TableDetail.html', {'data': data, 'orders': orders})
         elif request.user.groups.filter(name="Admins").exists():  # является ли user администратором
             data['is_admin'] = True
