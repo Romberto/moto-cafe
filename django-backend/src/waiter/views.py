@@ -1,3 +1,5 @@
+from functools import wraps
+
 from django.contrib import messages
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -6,6 +8,7 @@ from django.contrib.auth.models import User, Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import ProtectedError
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -13,9 +16,9 @@ from django.views import View
 from django.views.generic import ListView, DeleteView
 from rest_framework import status
 
-from rest_framework.permissions import  SAFE_METHODS
+from rest_framework.permissions import SAFE_METHODS
 from rest_framework.response import Response
-from rest_framework.viewsets import  ModelViewSet
+from rest_framework.viewsets import ModelViewSet
 
 from orders.models import Orders, ItemOrders
 from waiter.forms import WaiterForm
@@ -27,21 +30,35 @@ def user_is_waiter(user):
     return user.groups.filter(name='Waiter').exists()
 
 
-def login_admin(
-        function=None, redirect_field_name='auth/noperm.html', login_url=None
+def login_admin(view_func):
+    @wraps(view_func)
+    def wrapper(request, *args, **kwargs):
+        if request.user.is_authenticated and request.user.groups.filter(name='Admins').exists():
+            response = view_func(request, *args, **kwargs)
+            return response
+        elif request.user.is_authenticated:
+            return redirect('panel')
+        else:
+            return redirect('category')
+
+    return wrapper
+
+
+def login_adminI(
+        function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='auth/noperm/'
 ):
     """
     Decorator for views that checks that the user is logged in, redirecting
     to the log-in page if necessary.
     """
     actual_decorator = user_passes_test(
-        lambda u: u.groups.filter(name='Admins').exists(),
+        lambda u: u.is_authenticated and u.groups.filter(name='Admins').exists(),
         login_url=login_url,
         redirect_field_name=redirect_field_name,
     )
     if function:
         return actual_decorator(function)
-    return redirect('panel')
+    return actual_decorator
 
 
 class WaiterViewSet(ModelViewSet):
@@ -128,7 +145,9 @@ class WaitersView(ListView):
 
 @method_decorator(login_admin, name='dispatch')
 class EditWaiterView(View):
+
     def get(self, request, pk):
+
         try:
             waiter = User.objects.get(id=pk)
             form = WaiterForm(instance=waiter)
@@ -166,7 +185,15 @@ class DeleteWaiterView(DeleteView):
         try:
             return super().delete(request, *args, **kwargs)
         except ProtectedError as e:
-            return self.render_to_response({'error': str(e)})
+            return HttpResponse(
+                f"""
+                <div class='container'>
+                    <h1 class="text-center w-75">Удаление не возможно. \nУ официанта есть не закрытые столы. </h1>
+                    <br>
+                    <p>{str(e)}</p>
+                </div>
+                """
+                )
 
 
 @method_decorator(login_admin, name='dispatch')
