@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group, Permission
@@ -9,14 +10,13 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.generic import ListView, DetailView, DeleteView
+from django.views.generic import ListView, DeleteView
 from rest_framework import status
-from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, SAFE_METHODS
-from rest_framework.response import Response
-from rest_framework.viewsets import ViewSet, ModelViewSet
 
-from tables.models import TableModel
+from rest_framework.permissions import  SAFE_METHODS
+from rest_framework.response import Response
+from rest_framework.viewsets import  ModelViewSet
+
 from orders.models import Orders, ItemOrders
 from waiter.forms import WaiterForm
 from waiter.permissions.permissions import IsAuthenticatedAndAdminOrReadOnly
@@ -25,6 +25,23 @@ from waiter.serializers import WaiterSerializer, WaiterCreateSerializer
 
 def user_is_waiter(user):
     return user.groups.filter(name='Waiter').exists()
+
+
+def login_admin(
+        function=None, redirect_field_name='auth/noperm.html', login_url=None
+):
+    """
+    Decorator for views that checks that the user is logged in, redirecting
+    to the log-in page if necessary.
+    """
+    actual_decorator = user_passes_test(
+        lambda u: u.groups.filter(name='Admins').exists(),
+        login_url=login_url,
+        redirect_field_name=redirect_field_name,
+    )
+    if function:
+        return actual_decorator(function)
+    return redirect('panel')
 
 
 class WaiterViewSet(ModelViewSet):
@@ -97,6 +114,7 @@ class WaiterViewSet(ModelViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
 
+@method_decorator(login_admin, name='dispatch')
 class WaitersView(ListView):
     model = User
     template_name = 'waiter/Waiters.html'
@@ -108,6 +126,7 @@ class WaitersView(ListView):
         return queryset
 
 
+@method_decorator(login_admin, name='dispatch')
 class EditWaiterView(View):
     def get(self, request, pk):
         try:
@@ -137,6 +156,7 @@ class EditWaiterView(View):
             return render(request, 'waiter/WaiterEdit.html', data)
 
 
+@method_decorator(login_admin, name='dispatch')
 class DeleteWaiterView(DeleteView):
     model = User
     template_name = 'waiter/WaiterDelete.html'
@@ -149,6 +169,7 @@ class DeleteWaiterView(DeleteView):
             return self.render_to_response({'error': str(e)})
 
 
+@method_decorator(login_admin, name='dispatch')
 class CreateWaiter(View):
     def get(self, request):
         form = UserCreationForm()

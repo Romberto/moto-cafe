@@ -262,6 +262,7 @@ class TestAdminPanel(TestCase):
         response = self.client.post(url, data)
         self.assertEquals(response.status_code, 302)
 
+
     def test_category_create_post_login(self):
         url = reverse('panel_category_create')
         count_beefore = Category.objects.count()

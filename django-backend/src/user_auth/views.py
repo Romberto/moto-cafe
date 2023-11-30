@@ -10,6 +10,11 @@ from category.models import Category
 from user_auth.forms import AuthForm
 
 
+class NotPermission(View):
+    def get(self, request):
+        render(request, 'user_auth/noperm.html')
+
+
 class MyLoginView(LoginView):
     redirect_authenticated_user = True
     authentication_form = AuthenticationForm

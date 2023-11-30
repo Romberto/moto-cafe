@@ -142,9 +142,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_REDIRECT_URL = '/panel/'
 LOGIN_URL = '/auth/login/'
-
 INTERNAL_IPS = [
 
     "127.0.0.1",
 
 ]
+
