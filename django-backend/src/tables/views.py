@@ -90,7 +90,8 @@ def build_menu_product():
 
 
 # открытие счёта
-@method_decorator(login_required, name='dispatch')
+@require_POST
+@login_required
 def create_table(request):
     if request.method == 'POST':
         number = request.POST.get('number')
