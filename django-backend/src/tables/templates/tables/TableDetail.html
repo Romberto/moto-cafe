@@ -36,7 +36,7 @@
         {% if not data.table.owner_officiant %}
         <a href="#" class="btn btn-danger me-1" id="open-check" data-table={{data.table.name}}>открыть счёт</a>
         {% else %}
-        <button class="btn btn-warning mb-2 mx-auto d-block" id="js_add_product">добавить</button>
+        <button class="btn btn-warning mb-2 mx-auto d-block me-1" id="js_add_product">добавить</button>
         {% endif %}
         <a href="{% url 'panel' %}" class="btn btn-success">назад</a>
     </header>
@@ -45,20 +45,20 @@
 
         <section>
             <ul class="ps-0 header-check row">
-                <li class="col-6 ps-1 pe-1">название блюда</li>
-                <li class="col-2 ps-1 pe-1">стоим.</li>
-                <li class="col-2 ps-1 pe-1">кол-во</li>
-                <li class="col-2 ps-1 pe-1">сумма</li>
+                <li class="col-4 col-sm-6 ps-1 pe-1">название блюда</li>
+                <li class="col-3 col-sm-2 ps-1 pe-1">стоим.</li>
+                <li class="col-2 col-sm-2 ps-1 pe-1">кол-во</li>
+                <li class="col-3 col-sm-2 ps-1 pe-1">сумма</li>
             </ul>
             <ul class="check border border-success rounded ps-0 mb-1">
 
                 {% for item in orders.itemOrders %}
                 <li class="check__item">
                     <ul class="item_row row ps-0">
-                        <li class="col-6 mb-2 ps-3 pe-1 text-success">{{item.product_title}}</li>
-                        <li class="col-2 mb-2 ps-1 pe-1">{{item.product_price}} &#x20bd</li>
-                        <li class="col-1 mb-2 ps-1 pe-1">{{item.count}}</li>
-                        <li class="col-3 mb-2 ps-1 pe-1">{{item.total_price}} &#x20bd</li>
+                        <li class="col-5 col-sm-6 mb-2 ps-3 pe-1 text-success">{{item.product_title}}</li>
+                        <li class="col-3 col-sm-2 mb-2 ps-1 pe-1">{{item.product_price}} &#x20bd</li>
+                        <li class="col-1 col-sm-1 mb-2 ps-1 pe-1">{{item.count}}</li>
+                        <li class="col-3 col-sm-3 mb-2 ps-1 pe-1">{{item.total_price}} &#x20bd</li>
                     </ul>
                 </li>
                 {% endfor %}
