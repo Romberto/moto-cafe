@@ -8,11 +8,12 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.utils.decorators import method_decorator
 from django.views import View
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_GET
 from django.views.generic import DetailView, DeleteView
 
 from orders.models import ItemOrders, Orders
 from product.models import Product
+from waiter.views import login_admin
 from .models import TableModel
 
 
@@ -43,11 +44,12 @@ class PanelTable(View):
             'is_admin': False,
             'table': table
         }
-        if table.owner_officiant == request.user:  # является ли user официантом этого стола
+        is_admins = request.user.groups.filter(name="Admins").exists()
+        if table.owner_officiant == request.user and not is_admins:  # является ли user официантом этого стола
             orders = get_orders_id(pk)
 
             return render(request, 'tables/TableDetail.html', {'data': data, 'orders': orders})
-        elif request.user.groups.filter(name="Admins").exists():  # является ли user администратором
+        elif is_admins:  # является ли user администратором
             data['is_admin'] = True
             orders = get_orders_id(pk)
             return render(request, 'tables/TableDetail.html', {'data': data, 'orders': orders})
@@ -93,6 +95,9 @@ def build_menu_product():
 @require_POST
 @login_required
 def create_table(request):
+    """
+    ajax запрос на открытие стола
+    """
     if request.method == 'POST':
         number = request.POST.get('number')
         try:
@@ -113,7 +118,12 @@ def create_table(request):
         pass
 
 
+@require_POST
+@login_required
 def add_order(request):
+    """
+    ajax запрос на добавление заказов в стол
+    """
     if request.method == 'POST':
         table_name = request.POST.get('table_name')
         data_list = request.POST.get('data_list')
@@ -138,3 +148,47 @@ def add_order(request):
             'success': True
         }
         return JsonResponse(data)
+
+
+@require_GET
+@login_admin
+def close_empty_check(request):
+    """
+    ajax запрос на закрытие пустого стола
+    """
+    number_table = request.GET.get('table')
+    try:
+        table = TableModel.objects.get(name=int(number_table))
+        table.owner_officiant = None
+        table.save()
+        order = Orders.objects.get(table_id=table)
+        order.delete()
+        data = {
+            'success': True
+        }
+    except TableModel.DoesNotExist:
+        data = {
+            'success': False
+        }
+    return JsonResponse(data)
+
+
+@require_POST
+@login_admin
+def close_full_check(request):
+    """
+    ajax запрос для закрытия стола с заказом
+    """
+    table_name = request.POST.get('table')
+    order = Orders.objects.get(table_id__name=table_name, status='open')
+    order.table_id.owner_officiant = None
+    order.table_id.save()
+    order.status = 'pay'
+    order.delete()
+
+
+
+    data = {
+        'success': False
+    }
+    return JsonResponse(data)

@@ -13,7 +13,7 @@ class Orders(models.Model):
 
     def save(self, *args, **kwargs):
         # Проверяем, есть ли уже модель с таким table_id и статусами "счёт открыт" или "ожидает оплаты"
-        existing_orders = Orders.objects.filter(table_id=self.table_id, status__in=["open", "check"])
+        existing_orders = Orders.objects.filter(table_id=self.table_id, status__in=["pay", "check"])
         if existing_orders.exists():
             raise ValidationError("Модель с таким table_id и статусами 'счёт открыт' или 'ожидает оплаты' уже существует")
         super(Orders, self).save(*args, **kwargs)
@@ -24,8 +24,8 @@ class Orders(models.Model):
 
 
 class ItemOrders(models.Model):
-    order_id = models.ForeignKey(Orders, on_delete=models.PROTECT)
-    product_id = models.ForeignKey(Product, on_delete=models.PROTECT)
+    order_id = models.ForeignKey(Orders, on_delete=models.CASCADE)
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
     count = models.PositiveIntegerField()
 
     def __str__(self):
