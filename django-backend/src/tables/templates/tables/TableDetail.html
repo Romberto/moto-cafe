@@ -31,14 +31,22 @@
 
 <div class="container waiter position-relative">
 
-    <header class="d-flex justify-content-between p-2 mb-2">
-        <h1 class="number-table" data-tablename="{{data.table.name}}">Стол №{{data.table.name}}</h1>
-        {% if not data.table.owner_officiant %}
-        <a href="#" class="btn btn-danger me-1" id="open-check" data-table={{data.table.name}}>открыть счёт</a>
-        {% else %}
-        <button class="btn btn-warning mb-2 mx-auto d-block me-1" id="js_add_product">добавить</button>
-        {% endif %}
-        <a href="{% url 'panel' %}" class="btn btn-success">назад</a>
+    <header class="mb-2 text-center">
+        <h3 class="number-table" data-tablename="{{data.table.name}}">Стол №{{data.table.name}}</h3>
+        <div class="d-flex justify-content-between p-2 mb-2">
+            {% if not data.table.owner_officiant%}
+            <a href="#" class="btn btn-danger me-1" id="open-check" data-table={{data.table.name}}>открыть счёт</a>
+            {% else %}
+            <button class="btn btn-warning mb-2 me-1" id="js_add_product">добавить</button>
+            {% if data.is_admin %}
+            <button class="btn btn-danger mb-2 me-1 d-block" id="js_close_check">закрыть стол</button>
+            {% else %}
+            <button class="btn btn-info mb-2 me-1 d-block" id="js_print_check">счёт</button>
+            {% endif %}
+            {% endif %}
+            <a href="{% url 'panel' %}" class="btn btn-success">назад</a>
+        </div>
+
     </header>
     <main>
         {% if orders.itemOrders %}
@@ -102,11 +110,11 @@
 
     <script type="text/javascript" src="{% static 'tables/js/open_check.js'%}"></script>
     <script type="text/javascript" src="{% static 'tables/js/waiter_menu.js'%}"></script>
-
     <script type="text/javascript" src="{% static 'tables/js/pred_check.js'%}"></script>
-<script>
-    var csrf_token = "{{ csrf_token }}";
-</script>
+    <script type="text/javascript" src="{% static 'tables/js/close_check.js'%}"></script>
+    <script>
+        var csrf_token = "{{ csrf_token }}";
+    </script>
 </div>
 {% endblock %}
 
