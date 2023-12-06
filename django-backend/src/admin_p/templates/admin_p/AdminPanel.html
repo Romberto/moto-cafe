@@ -22,6 +22,7 @@
     <header class="pt-4 pb-4 mb-4">
         <div class="d-flex justify-content-around">
             <h2 class=" text-center">Панель администратора</h2>
+            <h1>{{tablename}}</h1>
             <a href="{% url 'logout' %}" class="btn float-end">выход</a>
         </div>
         <div class="line w-100 mb-3"></div>
@@ -58,11 +59,11 @@
                         {% for table in tables %}
                             {% if table.owner_officiant %}
                                 <li class="col-3 mb-2 ms-2 me-2">
-                                    <a href="{% url 'panel_table_detail' table.id  %}" class="tables__item p-2 btn btn-danger w-100 ps-0 pe-0">{{table.name}}</a>
+                                    <a href="{% url 'panel_table_detail' table.id  %}" class="tables__item p-2 btn btn-danger w-100 ps-0 pe-0" id="{{table.name}}">{{table.name}}</a>
                                 </li>
                             {% else %}
                                 <li class="col-3 mb-2 ms-2 me-2">
-                                    <a href="{% url 'panel_table_detail' table.id  %}" class="tables__item p-2 btn btn-success w-100 ps-0 pe-0">{{table.name}}</a>
+                                    <a href="{% url 'panel_table_detail' table.id  %}" class="tables__item p-2 btn btn-success w-100 ps-0 pe-0" id="{{table.name}}">{{table.name}}</a>
                                 </li>
                             {% endif %}
                         {% endfor %}
@@ -88,4 +89,23 @@
     </main>
 </div>
 
+<script type="text/javascript">
+let url = `ws://${window.location.host}/ws/notifications/`
+    const chatSocket = new WebSocket(url)
+
+chatSocket.onmessage = function (event) {
+    const data = JSON.parse(event.data);
+
+    const tableName = data;
+    let table = document.getElementById(tableName)
+    let isDanger = table.classList.contains("btn-danger");
+    if(!isDanger){
+        table.classList.remove('btn-success')
+        table.classList.add("btn-danger")
+    }else{
+        table.classList.remove('btn-danger')
+        table.classList.add("btn-success")
+    }
+}
+</script>
 {% endblock %}

@@ -28,6 +28,7 @@ else:
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,9 +44,10 @@ INSTALLED_APPS = [
     'product',
     'admin_p',
     'user_auth',
-    'tables', # столы
+    'tables',  # столы
     'waiter',  # официант
-    'orders'  # счёт
+    'orders', # счёт
+    "channels"
 ]
 
 MIDDLEWARE = [
@@ -146,4 +148,12 @@ INTERNAL_IPS = [
     "127.0.0.1",
 
 ]
-
+ASGI_APPLICATION = "proj.asgi.application"
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("188.225.72.113", 6379)],
+        },
+    },
+}
