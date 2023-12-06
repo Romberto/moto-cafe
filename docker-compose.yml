@@ -35,3 +35,5 @@ services:
       - ./persistentdata/certbot/conf:/etc/letsencrypt # <--here
       - ./persistentdata/certbot/www:/var/www/certbot # <--here
 
+  redis:
+    image: "redis:latest"

@@ -26,18 +26,18 @@
                        {% if table.owner_officiant == request.user %}
                 <li class="col-3 mb-2 ms-2 me-2">
                     <a href="{% url 'panel_table_detail' table.id  %}"
-                       class="tables__item p-2 btn btn-danger w-100 ps-0 pe-0">{{table.name}}</a>
+                       class="tables__item p-2 btn btn-danger w-100 ps-0 pe-0" id="{{table.name}}">{{table.name}}</a>
                 </li>
                         {% else %}
                 <li class="col-3 mb-2 ms-2 me-2">
                     <button
-                       class="tables__item p-2 btn btn-warning js-owner w-100 ps-0 pe-0">{{table.name}}</button>
+                       class="tables__item p-2 btn btn-warning js-owner w-100 ps-0 pe-0" id="{{table.name}}">{{table.name}}</button>
                 </li>
                         {% endif %}
                     {% else %}
                 <li class="col-3 mb-2 ms-2 me-2">
                     <a href="{% url 'panel_table_detail' table.id  %}"
-                       class="tables__item p-2 btn btn-success w-100 ps-0 pe-0">{{table.name}}</a>
+                       class="tables__item p-2 btn btn-success w-100 ps-0 pe-0" id="{{table.name}}">{{table.name}}</a>
                 </li>
                     {% endif %}
                 {% endfor %}
@@ -49,5 +49,28 @@
         </div>
     </section>
 </div>
+
+
+<script type="text/javascript">
+let url = `ws://${window.location.host}/ws/notifications/`
+    const chatSocket = new WebSocket(url)
+
+chatSocket.onmessage = function (event) {
+    const data = JSON.parse(event.data);
+
+    const tableName = data;
+    let table = document.getElementById(tableName)
+    if(table.classList.contains("btn-danger")){
+        table.classList.remove('btn-danger')
+        table.classList.add("btn-success")
+    }else if(table.classList.contains("btn-warning")){
+        table.classList.remove('btn-warning')
+        table.classList.add("btn-success")
+    }else if(table.classList.contains("btn-success")){
+        table.classList.remove('btn-success')
+        table.classList.add("btn-warning")
+    }
+}
+</script>
 
 {% endblock %}

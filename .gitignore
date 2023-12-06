@@ -5,6 +5,7 @@ __pycache__/
 .env
 /django-backend/src/media
 /persistentdata
+notification.txt
 
 /postgresql-db
 # C extensions
