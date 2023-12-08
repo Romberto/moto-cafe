@@ -6,4 +6,4 @@ COPY ./requirements.txt ./
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 COPY ./src ./src
-CMD gunicorn proj:app -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:443 --keyfile=/etc/letsencrypt/live/1566825-cw73062.twc1.net/privkey.pem --certfile=/etc/letsencrypt/live/1566825-cw73062.twc1.net/fullchain.pem
+CMD gunicorn -w 3 --chdir ./src proj.wsgi --bind 0.0.0.0:8000
