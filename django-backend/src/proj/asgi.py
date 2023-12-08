@@ -15,7 +15,8 @@ from django.core.asgi import get_asgi_application
 from channels.auth import AuthMiddlewareStack
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'proj.settings')
-
+import sys
+print(sys.path)
 application = get_asgi_application()
 import admin_p.routing
 
