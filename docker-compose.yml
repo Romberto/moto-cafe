@@ -9,6 +9,7 @@ services:
     volumes:
       - ./persistentdata/static:/var/www/static # <--here
       - ./persistentdata/media:/var/www/media # <--here
+      - ./persistentdata/certbot/conf:/etc/letsencrypt # <--here
   postgresql-db:
     restart: always
     image: postgres
