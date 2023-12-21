@@ -11,10 +11,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 load_dotenv()
 
+
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 if DEBUG:
     ALLOWED_HOSTS = ['localhost', '127.0.0.1']
@@ -28,7 +29,6 @@ else:
 # Application definition
 
 INSTALLED_APPS = [
-    "daphne",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -92,7 +92,7 @@ DATABASES = {
         'NAME': 'moto_base',
         'USER': 'moto_db_user',
         'PASSWORD': 'wer324cvG',
-        'HOST': 'postgresql-db',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
@@ -148,7 +148,7 @@ INTERNAL_IPS = [
     "127.0.0.1",
 
 ]
-ASGI_APPLICATION = "proj.asgi.application"
+#ASGI_APPLICATION = "proj.asgi.application"
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
