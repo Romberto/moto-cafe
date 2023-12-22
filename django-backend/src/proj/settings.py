@@ -18,7 +18,7 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 DEBUG = True
 
 if DEBUG:
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', '188.225.72.113', '1566825-cw73062.twc1.net']
 else:
     ALLOWED_HOSTS = ['localhost', '188.225.72.113', '1566825-cw73062.twc1.net', '127.0.0.1']
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -92,7 +92,7 @@ DATABASES = {
         'NAME': 'moto_base',
         'USER': 'moto_db_user',
         'PASSWORD': 'wer324cvG',
-        'HOST': 'localhost',
+        'HOST': 'postgresql-db',
         'PORT': '5432',
     }
 }
