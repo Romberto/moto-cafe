@@ -90,7 +90,7 @@
 </div>
 
 <script type="text/javascript">
-let url = `ws://${window.location.host}/ws/notification/`
+let url = `wss://${window.location.host}/ws/notification/`
     const chatSocket = new WebSocket(url)
 
 chatSocket.onmessage = function (event) {
