@@ -11,7 +11,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 load_dotenv()
 
-
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -29,6 +28,7 @@ else:
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'user_auth',
     'tables',  # столы
     'waiter',  # официант
-    'orders', # счёт
+    'orders',  # счёт
     "channels"
 ]
 
@@ -148,12 +148,12 @@ INTERNAL_IPS = [
     "127.0.0.1",
 
 ]
-#ASGI_APPLICATION = "proj.asgi.application"
+ASGI_APPLICATION = "proj.asgi.application"
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("188.225.72.113", 6379)],
+            "hosts": [("127.0.0.1", 6379)],
         },
     },
 }
