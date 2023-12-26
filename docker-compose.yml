@@ -35,6 +35,9 @@ services:
     volumes:
       - ./persistentdata/certbot/conf:/etc/letsencrypt # <--here
       - ./persistentdata/certbot/www:/var/www/certbot # <--here
-
   redis:
-    image: "redis:latest"
+        restart: unless-stopped
+        image: redis:7.2.3-alpine 
+        ports:
+        - 6379:6379
+  
