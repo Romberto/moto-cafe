@@ -52,7 +52,7 @@
 
 
 <script type="text/javascript">
-let url = `wss://${window.location.host}/ws/notifications/`
+let url = `ws://${window.location.host}/ws/notification/`
     const chatSocket = new WebSocket(url)
 
 chatSocket.onmessage = function (event) {
@@ -60,17 +60,26 @@ chatSocket.onmessage = function (event) {
 
     const tableName = data;
     let table = document.getElementById(tableName)
-    if(table.classList.contains("btn-danger")){
-        table.classList.remove('btn-danger')
-        table.classList.add("btn-success")
-    }else if(table.classList.contains("btn-warning")){
-        table.classList.remove('btn-warning')
-        table.classList.add("btn-success")
-    }else if(table.classList.contains("btn-success")){
+    let isDanger = table.classList.contains('btn-danger')
+    let isYellow = table.classList.contains("btn-warning")
+    console.log('start')
+    if(!isYellow){
+        if(isDanger){
+            table.classList.remove('btn-danger')
+            table.classList.add("btn-success")
+        }else{
         table.classList.remove('btn-success')
         table.classList.add("btn-warning")
+        }
+    }else{
+        table.classList.remove('btn-warning')
+        table.classList.add("btn-success")
     }
 }
+
+    chatSocket.onerror = function (error) {
+    console.log('WebSocket Error:', error);
+};
 </script>
 
 {% endblock %}
