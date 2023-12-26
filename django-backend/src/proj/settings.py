@@ -17,7 +17,9 @@ SECRET_KEY = str(os.getenv('SECRET_KEY'))
 DEBUG = False
 
 if DEBUG:
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1', '1566825-cw73062.twc1.net']
+
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', '188.225.72.113', '1566825-cw73062.twc1.net']
+
 else:
     ALLOWED_HOSTS = ['localhost', '188.225.72.113', '1566825-cw73062.twc1.net', '127.0.0.1']
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
