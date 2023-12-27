@@ -45,18 +45,45 @@ $('.accordion-header').on('click', function(e){
                     category_block.append(item_block)
                 })
 
+                var elements = document.querySelectorAll('.swiper[class*="mySwiper_"]');
 
-                var swiper = new Swiper(".mySwiper", {
-                    direction: "vertical",
-                    speed: 1200,
-                    loop: true,
-                    spaceBetween: 10,
-                    pagination: {
-                        el: ".swiper-pagination",
-                        clickable: true,
-                    },
-                //    autoHeight: true, // Включение автоматической высоты
+                // Создаем массив для хранения классов
+                var mySwiperClasses = [];
+
+                // Проходим по найденным элементам
+                elements.forEach(function(element) {
+                    // Получаем все классы элемента
+                    var classNames = element.className.split(' ');
+
+                    // Фильтруем классы, начинающиеся с "mySwiper_"
+                    var mySwiperClassesForElement = classNames.filter(function(className) {
+                        return className.indexOf('mySwiper_') === 0;
                     });
+
+                    // Добавляем найденные классы в общий массив
+                    mySwiperClasses = mySwiperClasses.concat(mySwiperClassesForElement);
+                });
+
+                // В результате mySwiperClasses содержит все классы, начинающиеся с "mySwiper_"
+                mySwiperClasses.forEach(function(element){
+                    var resultArray = element.split('_')[1];
+
+                    var swiper = new Swiper(`.${element}`, {
+                        direction: "vertical",
+                        speed: 1200,
+                        loop: true,
+                        spaceBetween: 10,
+                        pagination: {
+                            el: `.swiper-pagination${resultArray}`,
+                            clickable: true,
+                        },
+                    //    autoHeight: true, // Включение автоматической высоты
+                        });
+                });
+
+
+
+
 
             }else{
                 category_block.empty();
