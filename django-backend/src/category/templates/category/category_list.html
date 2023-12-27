@@ -86,11 +86,11 @@
                      data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <div class="swiper_inner">
-                            <div class="swiper mySwiper">
+                            <div class="swiper mySwiper-{{item.id}}" data-id="{{item.id}}" id="{{item.id}}">
                                 <div class="swiper-wrapper position-relative " id="products_{{item.id}}">
 
                                 </div>
-
+                                <div class="swiper-pagination swiper-pagination-{{item.id}}"></div>
                             </div>
                         </div>
                     </div>
