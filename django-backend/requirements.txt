@@ -20,7 +20,7 @@ djangorestframework==3.14.0
 exceptiongroup==1.2.0
 gunicorn==21.2.0
 h11==0.14.0
-httptools==0.2.0
+httptools
 hyperlink==21.0.0
 idna==3.6
 incremental==22.10.0
