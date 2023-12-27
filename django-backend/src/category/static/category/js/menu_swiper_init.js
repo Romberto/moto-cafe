@@ -45,34 +45,17 @@ $('.accordion-header').on('click', function(e){
                     category_block.append(item_block)
                 })
 
-                const buildSwiperSlider = sliderElm => {
-                const sliderIdentifier = sliderElm.dataset.id;
-                const spliterClass = sliderElm.classList[1]
-                return new Swiper(`.${spliterClass}`, {
+                var swiper = new Swiper(".mySwiper", {
                     direction: "vertical",
                     speed: 1200,
                     loop: true,
                     spaceBetween: 10,
                     pagination: {
-                        el: `.swiper-pagination-${sliderIdentifier}`,
+                        el: ".swiper-pagination",
                         clickable: true,
                     },
                 //    autoHeight: true, // Включение автоматической высоты
                     });
-            }
-
-            // Get all of the swipers on the page
-            const allSliders = document.querySelectorAll('.swiper');
-
-            // Loop over all of the fetched sliders and apply Swiper on each one.
-            allSliders.forEach(slider => buildSwiperSlider(slider));
-
-
-
-
-
-
-
 
 
             }else{
