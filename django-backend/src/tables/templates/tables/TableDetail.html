@@ -27,9 +27,38 @@
         min-height: 30px;
     }
 
-</style>
+    .edit-plus,
+    .edit-minus{
+        width: 100px;
+        height: 100px;
+        background: url({% static 'tables/img/triangle.svg' %});
+        background-size: cover; /* Растягивает изображение на весь экран и сохраняет пропорции */
+        background-position: center center; /* Выравнивание изображения по центру */
+        background-repeat: no-repeat;
+    }
 
+
+
+</style>
+<div class="edit_quality_product hide position-absolute top-0 left-0 bg-secondary">
+        <div class="popup-wrapper position-relative">
+
+            <div class="close">
+                <div class="close-btn"></div>
+            </div>
+            <div class="popup-inner position-absolute">
+                <div class="edit-plus p-1"></div>
+                <div class="edit-product text-center fw-bolder fst-italic">
+
+                </div>
+                <p class="product-quantity text-center fw-bold text-light"></p>
+                <div class="edit-minus p-1"></div>
+            </div>
+        </div>
+    </div>
 <div class="container waiter position-relative">
+
+
 
     <header class="mb-2 text-center">
         <h3 class="number-table" data-tablename="{{data.table.name}}">Стол №{{data.table.name}}</h3>
@@ -63,7 +92,15 @@
                 {% for item in orders.itemOrders %}
                 <li class="check__item">
                     <ul class="item_row row ps-0">
-                        <li class="col-5 col-sm-6 mb-2 ps-3 pe-1 text-success">{{item.product_title}}</li>
+
+                        <li class="col-5 col-sm-6 mb-2 ps-3 pe-1 text-success">
+                            {% if data.is_admin %}
+                            <a href="#" class="edit_product" data-orderid="{{item.id}}" data-count="{{item.count}}">{{item.product_title}}</a>
+                            {% else %}
+                            {{item.product_title}}
+                            {% endif %}
+                        </li>
+
                         <li class="col-3 col-sm-2 mb-2 ps-1 pe-1">{{item.product_price}} &#x20bd</li>
                         <li class="col-1 col-sm-1 mb-2 ps-1 pe-1">{{item.count}}</li>
                         <li class="col-3 col-sm-3 mb-2 ps-1 pe-1">{{item.total_price}} &#x20bd</li>
@@ -112,6 +149,7 @@
     <script type="text/javascript" src="{% static 'tables/js/waiter_menu.js'%}"></script>
     <script type="text/javascript" src="{% static 'tables/js/pred_check.js'%}"></script>
     <script type="text/javascript" src="{% static 'tables/js/close_check.js'%}"></script>
+    <script type="text/javascript" src="{% static 'tables/js/quality_check.js'%}"></script>
     <script>
         var csrf_token = "{{ csrf_token }}";
     </script>

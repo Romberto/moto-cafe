@@ -45,7 +45,6 @@ $('.accordion-header').on('click', function(e){
                     category_block.append(item_block)
                 })
 
-
                 var swiper = new Swiper(".mySwiper", {
                     direction: "vertical",
                     speed: 1200,
@@ -57,6 +56,7 @@ $('.accordion-header').on('click', function(e){
                     },
                 //    autoHeight: true, // Включение автоматической высоты
                     });
+
 
             }else{
                 category_block.empty();
