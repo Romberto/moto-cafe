@@ -17,3 +17,70 @@
     top: 5px;
     right: 15px;
 }
+
+.edit_quality_product{
+    width: 70vw;
+    height: 60vh;
+    z-index: 5;
+    transform: translate(20%, 8%);
+    border: 5px solid black;
+    border-radius: 8px;
+}
+
+.popup-inner{
+    display: flex;
+    transform: translate(50%, 5%);
+    width: 50%;
+    text-align: center;
+    flex-direction: column;
+    align-items: center;
+}
+.edit-minus{
+    transform: rotate(180deg);
+}
+
+.hide{
+    clip-path: polygon(0px 0px, 0px 0px, 0px 0px, 0px 0px);
+}
+
+.close{
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 30px;
+    height: 30px;
+
+}
+.close-btn{
+    position:relative;
+    width: 100%;
+    height:100%;
+    border-radius: 50%;
+    background: white;
+    border: black 1px solid;
+    cursor:pointer;
+}
+
+.close-btn::after{
+    content: '';
+    position: absolute;
+    top: 37%;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: black;
+    transform: rotate(45deg);
+    border-radius: 5px;
+}
+
+.close-btn::before{
+    content: '';
+    position: absolute;
+    top: 37%;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: black;
+    transform: rotate(-45deg);
+    border-radius: 5px;
+}

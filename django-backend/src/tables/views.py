@@ -27,6 +27,7 @@ def get_orders_id(pk: int):
     for item in query:
         result['itemOrders'].append({
             'id': item.id,
+            'order_id': item.order_id.id,
             'product_title': item.product_id.title,
             'product_price': int(item.product_id.price),
             'count': item.count,
@@ -191,4 +192,26 @@ def close_full_check(request):
     data = {
         'success': False
     }
+    return JsonResponse(data)
+
+
+@require_GET
+@login_admin
+def api_edit_product_quality(request):
+    order_id = request.GET.get('order')
+    count = request.GET.get('count')
+    order = ItemOrders.objects.get(id=int(order_id))
+    if int(count) != order.count:
+        if int(count) == 0:
+            order.delete()
+        else:
+            order.count = count
+            order.save()
+        data = {
+            'success': True
+        }
+    else:
+        data = {
+            'success': False
+        }
     return JsonResponse(data)
